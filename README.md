@@ -20,7 +20,7 @@ Nothing was invented, but several things were assumed or left out. Check each on
 | Item | Status |
 | --- | --- |
 | Name | Shown as "Sahil Tagala". The CV says "Mohammed Sahil Tagala"; change `profile.name` if you want the full name. |
-| CV download | Not added, because the CV PDF contains a phone number. To offer it, put the PDF in `public/` and set `resumeUrl`. |
+| CV download | `public/Mohammed-Sahil-Tagala-CV.pdf` is the CV with the phone number removed. To update it, replace that file (keep the phone number out, since the site and repo are public). |
 | Numocity entries | Taken from the CV. Confirm nothing listed is confidential. |
 | Dissertation case study | Facts and numbers are taken from the README of your public repo `ev-charging-anomaly-detection`. The wording around them is a draft; correct anything that misstates what you did. |
 | Halal Food Scanner, Task Management API | One-line summaries only. Add your role, the problem, a key decision, the outcome and links. To give a project its own page, add a `caseStudy` object to it. |

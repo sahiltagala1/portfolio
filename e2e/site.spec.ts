@@ -93,6 +93,8 @@ test("metadata, sitemap and robots exist", async ({ page, request }) => {
   expect((await request.get("/sitemap.xml")).ok()).toBe(true);
   expect((await request.get("/robots.txt")).ok()).toBe(true);
   expect((await request.get("/og.png")).ok()).toBe(true);
+  const cv = page.getByRole("link", { name: "Download CV (PDF)" });
+  expect((await request.get((await cv.getAttribute("href"))!)).ok()).toBe(true);
 });
 
 test("split demo: switching strategy changes the verdict", async ({ page }) => {

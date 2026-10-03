@@ -21,6 +21,7 @@ const paletteItems: PaletteItem[] = [
   { label: "Capabilities", hint: "What I can do", href: "/#capabilities" },
   { label: "Contact", hint: "Get in touch", href: "/#contact" },
   ...profile.links.map((l) => ({ label: l.label, hint: "Opens another site", href: l.href })),
+  ...(profile.resumeUrl ? [{ label: "CV", hint: "PDF", href: profile.resumeUrl }] : []),
 ];
 
 export function Header() {
@@ -52,7 +53,7 @@ export function Contact() {
           <li><a className="btn btn-solid" href={`mailto:${profile.email}`}>{profile.email}</a></li>
         )}
         {profile.resumeUrl && (
-          <li><a className="btn" href={profile.resumeUrl}>Download CV</a></li>
+          <li><a className="btn" href={profile.resumeUrl}>Download CV (PDF)</a></li>
         )}
         {profile.links.map((l) => (
           <li key={l.href}>
