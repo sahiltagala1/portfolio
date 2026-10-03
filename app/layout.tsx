@@ -11,21 +11,21 @@ import { profile } from "@/lib/content";
 import { IS_PRODUCTION_URL, SITE_URL } from "@/lib/site";
 
 const description =
-  "Sahil Tagala is a backend engineer and data scientist in Dublin. EV charging software at Numocity, an MSc in Data Science at TU Dublin, and a dissertation on explainable anomaly detection.";
+  "Mohammed Sahil Tagala is a software engineer and data science graduate in Dublin. Two years of EV charging software at Numocity, an MSc in Data Science at TU Dublin, and a dissertation on explainable anomaly detection.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${profile.name}, backend engineer and data scientist`, template: `%s · ${profile.name}` },
+  title: { default: `${profile.name}, software engineer and data scientist`, template: `%s · ${profile.name}` },
   description,
   alternates: { canonical: "/" },
   robots: IS_PRODUCTION_URL ? { index: true, follow: true } : { index: false, follow: false },
   openGraph: {
     type: "website",
     siteName: profile.name,
-    title: `${profile.name}, backend engineer and data scientist`,
+    title: `${profile.name}, software engineer and data scientist`,
     description,
     url: "/",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "A charging power trace with one flagged reading, beside the name Sahil Tagala" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "A charging power trace with one flagged reading, beside the name Mohammed Sahil Tagala" }],
   },
   twitter: { card: "summary_large_image" },
 };
@@ -41,6 +41,9 @@ const person = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: profile.name,
+  alternateName: profile.shortName,
+  jobTitle: "Software Engineer",
+  email: profile.email,
   url: SITE_URL,
   address: { "@type": "PostalAddress", addressLocality: "Dublin", addressCountry: "IE" },
   alumniOf: { "@type": "CollegeOrUniversity", name: "Technological University Dublin" },

@@ -5,7 +5,7 @@ import { FlagExplainer } from "@/components/FlagExplainer";
 import { RoamingDemo } from "@/components/RoamingDemo";
 import { SplitDemo } from "@/components/SplitDemo";
 
-const description = "Three small demos of ideas from Sahil Tagala's work: explaining an anomaly flag, splitting data honestly, and roaming authorisation in EV charging.";
+const description = "Three small demos of ideas from Mohammed Sahil Tagala's work: explaining an anomaly flag, splitting data honestly, and roaming authorisation in EV charging.";
 
 export const metadata: Metadata = {
   title: "Playground",

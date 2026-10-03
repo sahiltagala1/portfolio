@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Contact } from "@/components/Chrome";
 import { notes } from "@/lib/notes";
 
-const description = "Short engineering notes by Sahil Tagala on evaluation, explainability and EV charging protocols.";
+const description = "Short engineering notes by Mohammed Sahil Tagala on evaluation, explainability and EV charging protocols.";
 
 export const metadata: Metadata = {
   title: "Notes",

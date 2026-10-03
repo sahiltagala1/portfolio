@@ -1,4 +1,4 @@
-# Sahil Tagala portfolio
+# Mohammed Sahil Tagala portfolio
 
 A personal portfolio built with Next.js 16 (App Router), React 19 and strict TypeScript. It exports to plain static HTML, so it can be hosted anywhere.
 
@@ -19,11 +19,11 @@ Nothing was invented, but several things were assumed or left out. Check each on
 
 | Item | Status |
 | --- | --- |
-| Name "Sahil Tagala" | Assumed from the GitHub username. Confirm. |
-| LinkedIn, CV | Not provided, so not shown. Add `resumeUrl` and extra `links` to `profile`; the contact section picks them up. Put the CV file in `public/`. |
-| Numocity job title and dates | Unknown. The entry says "Backend engineering" and "about two years". Confirm nothing listed is confidential. |
-| Dissertation case study wording | The problem statement and the description of the garage-stratified split were written from a short summary. Correct anything that does not match the dissertation. No dataset name, figures or repo are shown. |
-| Halal Food Scanner, Task Management API, Churn Prediction | One-line summaries only. Add your role, the problem, a key decision, the outcome and links. To give a project its own page, add a `caseStudy` object to it. |
+| Name | Full name "Mohammed Sahil Tagala" in the page title, hero and contact section; "Sahil Tagala" in the top-left corner. Both are set in `profile` (`name`, `shortName`). |
+| CV download | `public/Mohammed-Sahil-Tagala-CV.pdf` is the CV with the phone number removed. To update it, replace that file (keep the phone number out, since the site and repo are public). |
+| Numocity entries | Taken from the CV. Confirm nothing listed is confidential. |
+| Dissertation case study | Facts and numbers are taken from the README of your public repo `ev-charging-anomaly-detection`. The wording around them is a draft; correct anything that misstates what you did. |
+| Halal Food Scanner, Task Management API | One-line summaries only. Add your role, the problem, a key decision, the outcome and links. To give a project its own page, add a `caseStudy` object to it. |
 | The three notes (`lib/notes.ts`) | Drafted for you from a summary of your work and from general facts about SHAP and OCPI. They are published in your voice, so read and correct every sentence, or remove a note by deleting its entry. Add a `date` to each once approved. |
 | Split demo and roaming demo | Both use invented numbers and say so. The split demo shows my reading of "garage-stratified temporal split"; the roaming demo assumes OCPI token authorisation is close to what you worked on. Change the wording if either is off. |
 | Contact form | Hidden until you set `NEXT_PUBLIC_FORMSPREE_ID`. Create a free form at formspree.io and use the ID from its address. |

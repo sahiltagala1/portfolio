@@ -8,7 +8,7 @@ test("home states identity, proof and a next step", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("models that explain their own alarms");
   await expect(page.getByRole("link", { name: "Explain a flag" }).first()).toBeVisible();
-  await expect(page.getByText("0.9873")).toBeVisible();
+  await expect(page.getByText("0.9268")).toBeVisible();
   await expect(page).toHaveTitle(/Sahil Tagala/);
 });
 
@@ -93,6 +93,8 @@ test("metadata, sitemap and robots exist", async ({ page, request }) => {
   expect((await request.get("/sitemap.xml")).ok()).toBe(true);
   expect((await request.get("/robots.txt")).ok()).toBe(true);
   expect((await request.get("/og.png")).ok()).toBe(true);
+  const cv = page.getByRole("link", { name: "Download CV (PDF)" });
+  expect((await request.get((await cv.getAttribute("href"))!)).ok()).toBe(true);
 });
 
 test("split demo: switching strategy changes the verdict", async ({ page }) => {

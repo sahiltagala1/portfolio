@@ -50,7 +50,7 @@ export function Palette({ items }: { items: PaletteItem[] }) {
   function go(item: PaletteItem | undefined) {
     if (!item) return;
     dialog.current?.close();
-    if (item.href.startsWith("http")) window.location.assign(item.href);
+    if (item.href.startsWith("http") || item.href.endsWith(".pdf")) window.location.assign(item.href);
     else router.push(item.href);
   }
 
