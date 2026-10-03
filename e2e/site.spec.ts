@@ -8,7 +8,7 @@ test("home states identity, proof and a next step", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("models that explain their own alarms");
   await expect(page.getByRole("link", { name: "Explain a flag" }).first()).toBeVisible();
-  await expect(page.getByText("0.9873")).toBeVisible();
+  await expect(page.getByText("0.9268")).toBeVisible();
   await expect(page).toHaveTitle(/Sahil Tagala/);
 });
 

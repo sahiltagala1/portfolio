@@ -59,7 +59,7 @@ export default async function CaseStudyPage(props: PageProps<"/work/[slug]">) {
         </section>
 
         <section aria-labelledby="decisions">
-          <h2 id="decisions">The decision that mattered</h2>
+          <h2 id="decisions">{cs.decisions.length > 1 ? "Decisions that mattered" : "The decision that mattered"}</h2>
           {cs.decisions.map((d) => (
             <div key={d.title} className="decision">
               <h3>{d.title}</h3>
@@ -84,7 +84,38 @@ export default async function CaseStudyPage(props: PageProps<"/work/[slug]">) {
               ))}
             </dl>
           )}
+          {cs.comparison && (
+            <div className="scroll-x" tabIndex={0} role="group" aria-label="Model comparison table">
+              <table className="cmp">
+                <caption>{cs.comparison.caption}</caption>
+                <thead>
+                  <tr>{cs.comparison.columns.map((c) => <th key={c} scope="col">{c}</th>)}</tr>
+                </thead>
+                <tbody>
+                  {cs.comparison.rows.map((row, i) => (
+                    <tr key={row[0]} className={i === cs.comparison!.highlight ? "cmp-mine" : undefined}>
+                      <th scope="row">{row[0]}{i === cs.comparison!.highlight && <span className="cmp-tag"> · this work</span>}</th>
+                      {row.slice(1).map((v, j) => <td key={j}>{v}</td>)}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
+
+        {cs.limitations && (
+          <section aria-labelledby="limits">
+            <h2 id="limits">What this does not show</h2>
+            <ul className="limits">
+              {cs.limitations.map((l) => <li key={l}>{l}</li>)}
+            </ul>
+          </section>
+        )}
+
+        {project.sourceUrl && (
+          <p><a className="btn btn-solid" href={project.sourceUrl} rel="noopener noreferrer">View the code and notebooks on GitHub</a></p>
+        )}
 
         <p className="case-next">
           <Link className="btn" href="/#work">See the rest of my work</Link>

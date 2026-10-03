@@ -9,6 +9,7 @@ export type Link = { label: string; href: string };
 
 export type Profile = {
   name: string;
+  role: string;
   positioning: string;
   location: string;
   summary: string;
@@ -28,6 +29,8 @@ export type CaseStudy = {
   decisions: Decision[];
   outcome: string[];
   results?: Array<{ label: string; value: string }>;
+  comparison?: { caption: string; columns: string[]; rows: string[][]; highlight: number };
+  limitations?: string[];
 };
 
 export type Project = {
@@ -44,32 +47,52 @@ export type Project = {
 
 export const profile: Profile = {
   name: "Sahil Tagala",
+  role: "Software engineer",
   positioning: "I build backend systems, and models that explain their own alarms.",
   location: "Dublin, Ireland",
   summary:
     "I spent two years building EV charging software at Numocity in Bengaluru, then moved to Dublin for an MSc in Data Science at TU Dublin. My dissertation taught a model to flag abnormal charging sessions and show its reasons.",
   availability: "Looking for graduate roles in software engineering and data science in Dublin.",
   email: "sahiltagala1@gmail.com",
-  links: [{ label: "GitHub", href: "https://github.com/sahiltagala1" }],
+  links: [
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/sahil-tagala" },
+    { label: "GitHub", href: "https://github.com/sahiltagala1" },
+  ],
 };
 
 export const experience = [
   {
-    title: "Backend engineering, Numocity Technologies",
-    meta: "Bengaluru · about two years",
+    title: "MSc in Computing (Data Science), TU Dublin",
+    meta: "Dublin · Sep 2025 to Aug 2026 · Second Class Honours, First Division · GPA 3.4/4.0",
     points: [
-      "Built backend services for EV charging infrastructure.",
-      "Integrated the charging management system with other networks over the OCPI protocol.",
-      "Worked in Python, Node.js and MongoDB, building and maintaining REST APIs.",
+      "Coursework in machine learning, deep learning, big data analytics, statistical analysis and data mining.",
+      "Dissertation on explainable anomaly detection in EV charging infrastructure.",
     ],
   },
   {
-    title: "MSc in Computing (Data Science), TU Dublin",
-    meta: "Dublin · 2025 to 2026 · Second Class Honours, First Division (2.1)",
+    title: "Software Engineer, Numocity Technologies",
+    meta: "Bengaluru · Jun 2023 to Jan 2025",
     points: [
-      "Modules included Applied Deep Learning, Machine Learning, Programming for Big Data and Data Management.",
-      "Dissertation on explainable anomaly detection in EV charging infrastructure.",
+      "Built and maintained backend services for EV charging platforms in Node.js, Python and MongoDB.",
+      "Implemented OCPI integrations between Numocity's Charge Management System and external network operators.",
+      "Automated real-time monitoring and alerting with Bull Queue and Redis.",
+      "Debugged production issues from logs and metrics, shipped permanent fixes and documented how each was resolved.",
+      "Mentored junior engineers during onboarding.",
     ],
+  },
+  {
+    title: "Software Engineer Intern, Numocity Technologies",
+    meta: "Bengaluru · Feb 2023 to May 2023",
+    points: [
+      "Built and optimised REST APIs, and refactored legacy code in the Charge Management System.",
+      "Wrote unit tests with Mocha and Chai.",
+      "Documented API endpoints and integration flows for the wider team.",
+    ],
+  },
+  {
+    title: "B.E. in Computer Science, Dayananda Sagar Academy of Technology and Management",
+    meta: "India · Sep 2019 to May 2023 · CGPA 8.06/10",
+    points: [],
   },
 ];
 
@@ -80,40 +103,73 @@ export const projects: Project[] = [
     track: "Data science",
     context: "MSc dissertation, TU Dublin",
     summary:
-      "An LSTM that flags abnormal charging sessions, paired with SHAP so every flag comes with the features that caused it.",
-    technologies: ["Python", "LSTM", "SHAP", "Time series"],
+      "An LSTM autoencoder that flags abnormal charging sessions without fault labels, paired with SHAP so every flag comes with the features that caused it.",
+    technologies: ["Python", "LSTM autoencoder", "SHAP", "Time series"],
+    sourceUrl: "https://github.com/sahiltagala1/ev-charging-anomaly-detection",
     caseStudy: {
       role: "Sole author. Supervised MSc dissertation.",
       facts: [
         { label: "Context", value: "MSc dissertation, TU Dublin" },
         { label: "Year", value: "2026" },
         { label: "Role", value: "Sole author, supervised" },
-        { label: "Full title", value: "Explainable Anomaly Detection in EV Charging Infrastructure: An LSTM-Based Approach with SHAP Interpretability" },
+        { label: "Data", value: "ACN-Data (Lee et al., 2019): 15,700 sessions, 3 sites, 7 garages" },
       ],
       problem: [
         "A detector that only says “this session is abnormal” leaves the person on the other end to work out why. In charging infrastructure, that person is an operator deciding whether to send someone to a charger.",
-        "I wanted flags that arrive with their reasons.",
+        "Real fault labels are also rare. I wanted a model that learns from normal sessions alone, and flags that arrive with their reasons.",
       ],
       approach: [
-        "An LSTM reads each charging session as a sequence and scores how abnormal it looks.",
-        "SHAP then splits that score across the input features. A flagged session shows which measurements pushed it over the line, and by how much.",
+        "I started from 15,700 public charging sessions and filtered them down to 3,595 that were clearly normal. Each session is described by 17 features: 10 about the session itself, 5 comparing it with recent history, and 2 about how busy the station was.",
+        "An LSTM autoencoder is trained on normal sessions only. It learns to reconstruct them, and a session it reconstructs badly is flagged. No fault labels are used in training.",
+        "To measure it, I injected 633 synthetic faults of three kinds: energy shortfall, current dropout and session timeout. SHAP then splits each flag across the 17 features.",
       ],
       decisions: [
         {
           title: "Splitting the data by garage as well as by time",
-          approach:
-            "The sessions came from several garages, and the mix of garages changed over time. I split by time within each garage, so the training and test sets keep the same mix of garages while the test data still comes later than the training data.",
           alternative:
-            "A plain chronological split trained on one mix of garages and tested on another. The scores it produced said more about the shift in garages than about the model.",
+            "A plain chronological split trained on one mix of garages and tested on another, so the scores partly measured the shift in garages.",
+          approach:
+            "I sorted sessions by time within each garage and split 60/20/20. Training, validation and test sets keep the same mix of garages, and later data is still never used to predict earlier data.",
+        },
+        {
+          title: "Making the injected faults honest",
+          alternative:
+            "With standard injection settings, 90 to 100% of the faulty feature values still fell inside the normal range. The faults were faults in name only, and no model could be fairly judged on them.",
+          approach:
+            "I ran an overlap analysis on each fault type and strengthened the injection until the faults were separated from normal behaviour.",
+        },
+        {
+          title: "Using the explanations to improve the model",
+          alternative:
+            "With every feature weighted equally in the reconstruction error, the autoencoder reached an AUPRC of 0.5776.",
+          approach:
+            "SHAP showed one dominant feature per fault type. I gave the four dominant features a weight of 5 in the error. AUPRC rose to 0.9268 with no retraining.",
         },
       ],
       outcome: [
-        "With the garage-stratified temporal split, the model reached the scores below.",
-        "The dissertation was completed in 2026 as part of an MSc awarded with Second Class Honours, First Division.",
+        "The autoencoder beat both unsupervised baselines, and the difference held up under cross-validation (p = 0.009 against the threshold rule, p < 0.001 against Isolation Forest).",
+        "It reached 83% of the F1 score of a supervised LSTM that was given the fault labels.",
+        "SHAP named a single clear driver for each fault type: energy delivered for shortfalls, the share of time at zero current for dropouts, and deviation in duration for timeouts.",
       ],
       results: [
-        { label: "AUC-ROC", value: "0.9873" },
+        { label: "AUPRC", value: "0.9268" },
         { label: "F1 score", value: "0.8173" },
+        { label: "AUC-ROC", value: "0.9869" },
+      ],
+      comparison: {
+        caption: "Test-set results. The supervised LSTM is a reference that sees fault labels; the other three do not.",
+        columns: ["Model", "F1", "False positive rate", "AUC-ROC", "AUPRC"],
+        rows: [
+          ["Threshold rule", "0.7135", "0.1415", "0.8297", "0.7297"],
+          ["Isolation Forest", "0.4542", "0.1165", "0.8625", "0.4045"],
+          ["LSTM autoencoder", "0.8173", "0.0707", "0.9869", "0.9268"],
+          ["Supervised LSTM (reference)", "0.9844", "0.0042", "0.9992", "0.9943"],
+        ],
+        highlight: 2,
+      },
+      limitations: [
+        "The faults are synthetic. They were injected into real sessions and deliberately separated from normal behaviour, so real faults are likely to be harder to catch.",
+        "The data comes from three sites. I have not tested the model on another network.",
       ],
     },
   },
@@ -138,8 +194,10 @@ export const projects: Project[] = [
     title: "Customer Churn Prediction",
     track: "Data science",
     context: "Portfolio project",
-    summary: "A machine learning system that predicts which customers are likely to leave.",
-    technologies: ["Python", "Classification"],
+    summary:
+      "A pipeline that predicts which customers will leave, built on 7,000+ records. It compares four classifiers (best ROC-AUC 0.891), uses SMOTE for class imbalance, and presents the results in a Streamlit dashboard.",
+    technologies: ["Python", "XGBoost", "scikit-learn", "pandas", "Streamlit"],
+    sourceUrl: "https://github.com/sahiltagala1/churn-prediction",
   },
   {
     slug: "eeg-motor-imagery",
@@ -172,7 +230,7 @@ export const projects: Project[] = [
 export const capabilities = [
   {
     title: "Building backend services",
-    body: "REST APIs and services in Python and Node.js, with MongoDB behind them.",
+    body: "REST APIs and services in Node.js and Python, with MongoDB, MySQL and Redis behind them.",
     evidence: "Numocity, Real-Time Task Management API",
   },
   {
@@ -181,9 +239,14 @@ export const capabilities = [
     evidence: "Numocity",
   },
   {
+    title: "Keeping production systems observable",
+    body: "Monitoring and alerting with Bull Queue and Redis, and debugging live issues from logs and metrics.",
+    evidence: "Numocity",
+  },
+  {
     title: "Training models on sequences and images",
-    body: "LSTMs for time series, CNNs and transfer learning for images, classical models where they fit.",
-    evidence: "Dissertation, Facial Age Estimation, EEG Motor Imagery Classifier",
+    body: "LSTMs for time series, CNNs and transfer learning for images, XGBoost and scikit-learn where they fit.",
+    evidence: "Dissertation, Customer Churn Prediction, Facial Age Estimation, EEG Motor Imagery Classifier",
   },
   {
     title: "Explaining what a model did",
@@ -192,13 +255,8 @@ export const capabilities = [
   },
   {
     title: "Shipping something people can use",
-    body: "A mobile app with React Native, FastAPI and Supabase; a model wrapped in a Streamlit app.",
-    evidence: "Halal Food Scanner, EEG Motor Imagery Classifier",
-  },
-  {
-    title: "Working with larger datasets",
-    body: "Data pipelines in PySpark. Also comfortable in Java and C++.",
-    evidence: "Credit Risk with PySpark",
+    body: "A mobile app with React Native, FastAPI and Supabase; models wrapped in Streamlit dashboards; Docker and CI/CD.",
+    evidence: "Halal Food Scanner, Customer Churn Prediction, EEG Motor Imagery Classifier",
   },
 ];
 

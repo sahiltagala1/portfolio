@@ -13,7 +13,7 @@ export default function Home() {
     <>
       <main id="main">
         <section className="hero" aria-labelledby="hero-title">
-          <p className="eyebrow">Plug in · {profile.name} · {profile.location}</p>
+          <p className="eyebrow">Plug in · {profile.name} · {profile.role} · {profile.location}</p>
           <h1 id="hero-title">{profile.positioning}</h1>
           <p className="lede">{profile.summary}</p>
           {profile.availability && <p className="lede lede-strong">{profile.availability}</p>}
@@ -38,9 +38,11 @@ export default function Home() {
               <li key={e.title}>
                 <h3>{e.title}</h3>
                 <p className="meta">{e.meta}</p>
-                <ul>
-                  {e.points.map((pt) => <li key={pt}>{pt}</li>)}
-                </ul>
+                {e.points.length > 0 && (
+                  <ul>
+                    {e.points.map((pt) => <li key={pt}>{pt}</li>)}
+                  </ul>
+                )}
               </li>
             ))}
           </ol>
@@ -63,6 +65,9 @@ export default function Home() {
               </p>
               <Tags items={featured.technologies} />
               <p><Link className="more" href={`/work/${featured.slug}/`}>Read the case study</Link></p>
+              {featured.sourceUrl && (
+                <p><a className="more" href={featured.sourceUrl} rel="noopener noreferrer">View the dissertation code on GitHub</a></p>
+              )}
             </div>
             <dl className="results">
               {results.map((r) => (
