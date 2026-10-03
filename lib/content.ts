@@ -49,6 +49,7 @@ export const profile: Profile = {
   summary:
     "I spent two years building EV charging software at Numocity in Bengaluru, then moved to Dublin for an MSc in Data Science at TU Dublin. My dissertation taught a model to flag abnormal charging sessions and show its reasons.",
   availability: "Looking for graduate roles in software engineering and data science in Dublin.",
+  email: "sahiltagala1@gmail.com",
   links: [{ label: "GitHub", href: "https://github.com/sahiltagala1" }],
 };
 
