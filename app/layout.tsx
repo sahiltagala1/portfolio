@@ -11,7 +11,7 @@ import { profile } from "@/lib/content";
 import { IS_PRODUCTION_URL, SITE_URL } from "@/lib/site";
 
 const description =
-  "Sahil Tagala is a software engineer and data science graduate in Dublin. Two years of EV charging software at Numocity, an MSc in Data Science at TU Dublin, and a dissertation on explainable anomaly detection.";
+  "Mohammed Sahil Tagala is a software engineer and data science graduate in Dublin. Two years of EV charging software at Numocity, an MSc in Data Science at TU Dublin, and a dissertation on explainable anomaly detection.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: `${profile.name}, software engineer and data scientist`,
     description,
     url: "/",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "A charging power trace with one flagged reading, beside the name Sahil Tagala" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "A charging power trace with one flagged reading, beside the name Mohammed Sahil Tagala" }],
   },
   twitter: { card: "summary_large_image" },
 };
@@ -41,7 +41,7 @@ const person = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: profile.name,
-  alternateName: "Mohammed Sahil Tagala",
+  alternateName: profile.shortName,
   jobTitle: "Software Engineer",
   email: profile.email,
   url: SITE_URL,

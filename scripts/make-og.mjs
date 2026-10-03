@@ -13,7 +13,7 @@ p{margin:0;font:500 26px M;letter-spacing:.06em;text-transform:uppercase;color:#
 h1{margin:0;font:700 76px/1.08 D;letter-spacing:-.025em;max-width:960px}
 svg{width:100%;height:150px}
 </style>
-<p>Sahil Tagala · Dublin</p>
+<p>Mohammed Sahil Tagala · Dublin</p>
 <h1>Backend systems, and models that explain their own alarms.</h1>
 <svg viewBox="0 0 1056 150" fill="none"><path d="M0 140 L90 30 H560 L590 105 L620 30 H760 C860 30 900 130 1056 138" stroke="#0A6B67" stroke-width="6" stroke-linejoin="round"/><path d="M590 88 L606 116 H574 Z" fill="#954C00" stroke="#EDF2F2" stroke-width="3"/></svg>`;
 

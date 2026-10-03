@@ -9,6 +9,8 @@ export type Link = { label: string; href: string };
 
 export type Profile = {
   name: string;
+  /** Used where space is tight, such as the top-left corner. */
+  shortName: string;
   role: string;
   positioning: string;
   location: string;
@@ -46,7 +48,8 @@ export type Project = {
 };
 
 export const profile: Profile = {
-  name: "Sahil Tagala",
+  name: "Mohammed Sahil Tagala",
+  shortName: "Sahil Tagala",
   role: "Software engineer",
   positioning: "I build backend systems, and models that explain their own alarms.",
   location: "Dublin, Ireland",

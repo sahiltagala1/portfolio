@@ -1,4 +1,4 @@
-# Sahil Tagala portfolio
+# Mohammed Sahil Tagala portfolio
 
 A personal portfolio built with Next.js 16 (App Router), React 19 and strict TypeScript. It exports to plain static HTML, so it can be hosted anywhere.
 
@@ -19,7 +19,7 @@ Nothing was invented, but several things were assumed or left out. Check each on
 
 | Item | Status |
 | --- | --- |
-| Name | Shown as "Sahil Tagala". The CV says "Mohammed Sahil Tagala"; change `profile.name` if you want the full name. |
+| Name | Full name "Mohammed Sahil Tagala" in the page title, hero and contact section; "Sahil Tagala" in the top-left corner. Both are set in `profile` (`name`, `shortName`). |
 | CV download | `public/Mohammed-Sahil-Tagala-CV.pdf` is the CV with the phone number removed. To update it, replace that file (keep the phone number out, since the site and repo are public). |
 | Numocity entries | Taken from the CV. Confirm nothing listed is confidential. |
 | Dissertation case study | Facts and numbers are taken from the README of your public repo `ev-charging-anomaly-detection`. The wording around them is a draft; correct anything that misstates what you did. |

@@ -27,7 +27,7 @@ const paletteItems: PaletteItem[] = [
 export function Header() {
   return (
     <header className="site-header">
-      <Link href="/" className="site-name">{profile.name}</Link>
+      <Link href="/" className="site-name">{profile.shortName}</Link>
       <nav aria-label="Main">
         <ul>
           <li><Link href="/#background">Background</Link></li>
@@ -67,7 +67,7 @@ export function Contact() {
           fallback={profile.email ? `You can also email ${profile.email}.` : "You can also reach me through GitHub."}
         />
       )}
-      <p className="fine">{profile.location}</p>
+      <p className="fine">{profile.name} · {profile.location}</p>
     </footer>
   );
 }
