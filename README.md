@@ -20,7 +20,7 @@ Nothing was invented, but several things were assumed or left out. Check each on
 | Item | Status |
 | --- | --- |
 | Name "Sahil Tagala" | Assumed from the GitHub username. Confirm. |
-| Email, LinkedIn, CV | Not provided, so not shown. Add `email`, `resumeUrl` and extra `links` to `profile`; the contact section picks them up. Put the CV file in `public/`. |
+| LinkedIn, CV | Not provided, so not shown. Add `resumeUrl` and extra `links` to `profile`; the contact section picks them up. Put the CV file in `public/`. |
 | Numocity job title and dates | Unknown. The entry says "Backend engineering" and "about two years". Confirm nothing listed is confidential. |
 | Dissertation case study wording | The problem statement and the description of the garage-stratified split were written from a short summary. Correct anything that does not match the dissertation. No dataset name, figures or repo are shown. |
 | Halal Food Scanner, Task Management API, Churn Prediction | One-line summaries only. Add your role, the problem, a key decision, the outcome and links. To give a project its own page, add a `caseStudy` object to it. |
