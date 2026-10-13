@@ -116,7 +116,7 @@ export function Contact() {
   return (
     <footer className="contact" id="contact">
       <div className="contact-intro">
-        <p className="eyebrow">Unplug · 90 min</p>
+        <p className="eyebrow">Contact</p>
         <h2>Hiring in software engineering or data science? I&apos;d like to hear about it.</h2>
         {profile.availability && <p className="lede">{profile.availability}</p>}
         {profile.email && (

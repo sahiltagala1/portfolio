@@ -9,14 +9,15 @@ test("home states identity, proof and a next step", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "models that explain their own alarms",
   );
-  await expect(page.getByRole("link", { name: "Explain a flag" }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: "See my work" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Explain a flag/ })).toBeVisible();
   await expect(page.getByText("0.9268")).toBeVisible();
   await expect(page).toHaveTitle(/Sahil Tagala/);
 });
 
 test("navigation reaches every section and the case study", async ({ page }) => {
   await page.goto("/");
-  for (const id of ["background", "work", "flag", "notes", "contact"]) {
+  for (const id of ["background", "work", "playground", "notes", "contact"]) {
     await expect(page.locator(`#${id}`)).toHaveCount(1);
   }
   await page.getByRole("link", { name: "Read the case study" }).click();
@@ -31,7 +32,7 @@ test("navigation reaches every section and the case study", async ({ page }) => 
 });
 
 test("picking a reading changes the explanation", async ({ page }) => {
-  await page.goto("/#flag");
+  await page.goto("/playground/#flag");
   await expect(page.getByRole("heading", { name: /Minute 52/ })).toBeVisible();
   await page.getByRole("radio", { name: /Minute 78/ }).check();
   await expect(page.getByRole("heading", { name: /Minute 78.*not flagged/ })).toBeVisible();
@@ -39,7 +40,7 @@ test("picking a reading changes the explanation", async ({ page }) => {
 });
 
 test("the explainer works from the keyboard", async ({ page }) => {
-  await page.goto("/#flag");
+  await page.goto("/playground/#flag");
   await page.getByRole("radio", { name: /Minute 52/ }).focus();
   await page.keyboard.press("ArrowLeft");
   await expect(page.getByRole("heading", { name: /Minute 40/ })).toBeVisible();
@@ -50,7 +51,7 @@ test("the explainer works from the keyboard", async ({ page }) => {
 test("unknown addresses get the custom 404", async ({ page }) => {
   const res = await page.goto("/nope/");
   expect(res?.status()).toBe(404);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("isn't part of the session");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("doesn't exist");
 });
 
 test("external links are labelled and safe", async ({ page }) => {
@@ -78,6 +79,8 @@ test("content and the explainer work without JavaScript", async ({ browser }) =>
   const page = await context.newPage();
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.locator(".typed [aria-hidden]")).toHaveText("Software engineer");
+  await page.goto("/playground/");
   await expect(page.getByRole("heading", { name: /Minute 52/ })).toBeVisible();
   await page.getByRole("radio", { name: /Minute 24/ }).check();
   await expect(page.getByRole("heading", { name: /Minute 24/ })).toBeVisible();
@@ -302,4 +305,15 @@ test("the portrait is shown with alt text", async ({ page }) => {
   const photo = page.getByRole("img", { name: "Mohammed Sahil Tagala" });
   await expect(photo).toBeVisible();
   expect(await photo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
+});
+
+test("the hero types each role in turn", async ({ browser }) => {
+  // Reduced motion is on for the other tests, so this one turns it off.
+  const context = await browser.newContext({ reducedMotion: "no-preference" });
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page.locator(".typed [aria-hidden]")).toContainText("Backend developer", {
+    timeout: 8000,
+  });
+  await context.close();
 });

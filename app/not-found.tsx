@@ -6,8 +6,8 @@ export const metadata: Metadata = { title: "Page not found", robots: { index: fa
 export default function NotFound() {
   return (
     <main id="main" className="hero">
-      <p className="eyebrow">404 · No reading at this address</p>
-      <h1>This page isn&apos;t part of the session.</h1>
+      <p className="eyebrow">Error 404</p>
+      <h1>This page doesn&apos;t exist.</h1>
       <p className="lede">The link may be old, or the address may have a typo.</p>
       <ul className="actions">
         <li>

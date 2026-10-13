@@ -16,6 +16,8 @@ export type Profile = {
   /** Formspree form id. The NEXT_PUBLIC_FORMSPREE_ID environment variable overrides it. */
   contactFormId?: string;
   role: string;
+  /** Typed one after another under the name in the hero. */
+  roles: string[];
   positioning: string;
   location: string;
   summary: string;
@@ -57,6 +59,7 @@ export const profile: Profile = {
   photo: { src: "/mohammed-sahil.jpg", alt: "Mohammed Sahil Tagala", width: 800, height: 1000 },
   contactFormId: "xnpjgzqz",
   role: "Software engineer",
+  roles: ["Software engineer", "Backend developer", "Data scientist", "ML engineer"],
   positioning: "I build backend systems, and models that explain their own alarms.",
   location: "Dublin, Ireland",
   summary:

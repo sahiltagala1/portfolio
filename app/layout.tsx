@@ -16,17 +16,14 @@ const description =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: `${profile.name}, software engineer and data scientist`,
-    template: `%s · ${profile.name}`,
-  },
+  title: { default: profile.name, template: `%s · ${profile.shortName}` },
   description,
   alternates: { canonical: "/" },
   robots: IS_PRODUCTION_URL ? { index: true, follow: true } : { index: false, follow: false },
   openGraph: {
     type: "website",
     siteName: profile.name,
-    title: `${profile.name}, software engineer and data scientist`,
+    title: profile.name,
     description,
     url: "/",
     images: [
@@ -34,7 +31,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "A charging power trace with one flagged reading, beside the name Mohammed Sahil Tagala",
+        alt: "Mohammed Sahil Tagala, software engineer, Dublin",
       },
     ],
   },
