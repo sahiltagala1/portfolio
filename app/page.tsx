@@ -1,10 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Contact } from "@/components/Chrome";
-import { SessionStrip } from "@/components/SessionStrip";
-import { FlagExplainer } from "@/components/FlagExplainer";
+import { TypedRoles } from "@/components/TypedRoles";
 import { notes } from "@/lib/notes";
 import { capabilities, experience, featured, profile, projects } from "@/lib/content";
+
+const demos = [
+  {
+    tag: "Explainability",
+    title: "Explain a flag",
+    text: "Pick a reading and see which features pushed the model to flag it.",
+    href: "/playground/#flag",
+  },
+  {
+    tag: "Evaluation",
+    title: "Split the data",
+    text: "Why a test score can mislead when the data shifts over time.",
+    href: "/playground/#split",
+  },
+  {
+    tag: "Integrations",
+    title: "Roaming authorisation",
+    text: "Who decides when one system cannot reach another.",
+    href: "/playground/#roaming",
+  },
+];
 
 export default function Home() {
   const others = projects.filter((p) => p.slug !== featured.slug);
@@ -16,8 +36,9 @@ export default function Home() {
         <section className="hero" aria-labelledby="hero-title">
           <div className={profile.photo ? "hero-grid" : undefined}>
             <div className="hero-text">
-              <p className="eyebrow">
-                Plug in · {profile.name} · {profile.role} · {profile.location}
+              <p className="hello">
+                <span className="hello-name">{profile.name}</span>
+                <TypedRoles roles={profile.roles} />
               </p>
               <h1 id="hero-title">{profile.positioning}</h1>
               {profile.availability && (
@@ -29,8 +50,8 @@ export default function Home() {
               <p className="lede">{profile.summary}</p>
               <ul className="actions">
                 <li>
-                  <Link className="btn btn-solid" href="/#flag">
-                    Explain a flag
+                  <Link className="btn btn-solid" href="/#work">
+                    See my work
                   </Link>
                 </li>
                 <li>
@@ -52,12 +73,11 @@ export default function Home() {
               </figure>
             )}
           </div>
-          <SessionStrip />
         </section>
 
         <section id="background" aria-labelledby="background-title">
           <div className="section-head">
-            <p className="eyebrow">Ramp · 0 to 8 min</p>
+            <p className="eyebrow">Experience</p>
             <h2 id="background-title">Background</h2>
             <p className="lede">
               I worked on charging infrastructure before I studied it. The dissertation came out of
@@ -83,8 +103,8 @@ export default function Home() {
 
         <section id="work" aria-labelledby="work-title">
           <div className="section-head">
-            <p className="eyebrow">Steady state · 8 to 62 min</p>
-            <h2 id="work-title">Work</h2>
+            <p className="eyebrow">Selected work</p>
+            <h2 id="work-title">Projects</h2>
           </div>
 
           <article className="feature">
@@ -148,26 +168,30 @@ export default function Home() {
           </ul>
         </section>
 
-        <section id="flag" aria-labelledby="flag-title">
+        <section id="playground" aria-labelledby="playground-title">
           <div className="section-head">
-            <p className="eyebrow">Minute 52 · Flag</p>
-            <h2 id="flag-title">A flag is only useful if it says why.</h2>
-            <p className="lede">
-              That idea is my dissertation. Here is a small version of it you can try: one charging
-              session, four readings, and the reasons behind each verdict.
-            </p>
+            <p className="eyebrow">Playground</p>
+            <h2 id="playground-title">Ideas from my work, small enough to try</h2>
           </div>
-          <FlagExplainer />
-          <p>
-            <Link className="more" href="/playground/">
-              Two more demos in the playground: splitting data, and roaming authorisation
-            </Link>
-          </p>
+          <ul className="demo-cards">
+            {demos.map((d) => (
+              <li key={d.href}>
+                <Link href={d.href} className="demo-card">
+                  <span className="demo-card-tag">{d.tag}</span>
+                  <span className="demo-card-title">{d.title}</span>
+                  <span className="demo-card-text">{d.text}</span>
+                  <span className="demo-card-go" aria-hidden="true">
+                    Try it →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section id="notes" aria-labelledby="notes-title">
           <div className="section-head">
-            <p className="eyebrow">Session log</p>
+            <p className="eyebrow">Writing</p>
             <h2 id="notes-title">Notes</h2>
           </div>
           <ul className="note-list">
@@ -184,7 +208,7 @@ export default function Home() {
 
         <section id="capabilities" aria-labelledby="capabilities-title">
           <div className="section-head">
-            <p className="eyebrow">Taper · 62 to 90 min</p>
+            <p className="eyebrow">Skills</p>
             <h2 id="capabilities-title">What I can do, and where I did it</h2>
           </div>
           <dl className="caps">

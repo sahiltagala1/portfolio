@@ -18,7 +18,7 @@ export default function Notes() {
     <>
       <main id="main">
         <header className="hero">
-          <p className="eyebrow">Session log · Notes</p>
+          <p className="eyebrow">Notes</p>
           <h1>Things I learned the slow way.</h1>
           <p className="lede">Short notes. Each one has a demo you can try.</p>
         </header>

@@ -1,25 +1,25 @@
-/* Layout idea: one left-aligned column that follows a charging session from plug-in to unplug. */
+/* Layout idea: one calm, left-aligned column; neutral greys with a single ultramarine accent. */
 :root {
   /* Each colour is written once as light-dark(light value, dark value).
      The browser picks one from color-scheme, which follows the system setting
      unless the visitor chooses a theme with the toggle in the header. */
   color-scheme: light dark;
-  --color-canvas: light-dark(#eef3f2, #0b1517);
-  --color-surface: light-dark(#fbfdfc, #122126);
-  --color-raised: light-dark(#ffffff, #172a30);
-  --color-text: light-dark(#10262c, #e3eeee);
-  --color-text-muted: light-dark(#4b6166, #9bb0b2);
-  --color-border: light-dark(#cbd8d8, #273d43);
-  --color-accent: light-dark(#0a6b67, #5fd3c8);
-  --color-accent-soft: light-dark(#d5ebe8, #12383a);
-  --color-accent-contrast: light-dark(#ffffff, #0b1517);
-  --color-warning: light-dark(#954c00, #f2a541);
-  --color-positive: light-dark(#0a6b67, #5fd3c8);
-  --color-danger: light-dark(#a3271b, #ff8a7a);
-  --cat-1: light-dark(#0a6b67, #5fd3c8);
-  --cat-2: light-dark(#954c00, #f2a541);
-  --cat-3: light-dark(#4a3fa3, #b3a9ff);
-  --shadow-tint: light-dark(rgb(16 38 44 / 0.07), rgb(0 0 0 / 0.35));
+  --color-canvas: light-dark(#fafaf9, #0d0d0f);
+  --color-surface: light-dark(#ffffff, #151518);
+  --color-raised: light-dark(#ffffff, #1b1b1f);
+  --color-text: light-dark(#18181b, #ececee);
+  --color-text-muted: light-dark(#5c5c66, #a0a0ab);
+  --color-border: light-dark(#e4e4e0, #2a2a30);
+  --color-accent: light-dark(#3b45d9, #9aa2ff);
+  --color-accent-soft: light-dark(#ecedfd, #1e2142);
+  --color-accent-contrast: light-dark(#ffffff, #0d0d0f);
+  --color-warning: light-dark(#a24d00, #f5a95b);
+  --color-positive: light-dark(#17784c, #5bd69a);
+  --color-danger: light-dark(#b42318, #ff8a7a);
+  --cat-1: light-dark(#3b45d9, #9aa2ff);
+  --cat-2: light-dark(#a24d00, #f5a95b);
+  --cat-3: light-dark(#0f7c72, #4fd1c5);
+  --shadow-tint: light-dark(rgb(24 24 27 / 0.06), rgb(0 0 0 / 0.45));
   --shadow-card: 0 1px 2px var(--shadow-tint), 0 10px 28px var(--shadow-tint);
 
   --font-display: "Bricolage Grotesque Variable", "Trebuchet MS", sans-serif;
@@ -425,66 +425,6 @@ h3 {
   font-weight: 500;
   display: inline-block;
   padding-block: 0.4rem;
-}
-
-/* Session strip: the whole site as one charging session */
-.strip {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  margin-top: var(--space-2);
-}
-.strip-trace {
-  position: relative;
-  height: clamp(4.5rem, 12vw, 7.5rem);
-}
-.strip-trace svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-.strip-trace path {
-  stroke: var(--color-accent);
-  stroke-width: 2.5;
-  vector-effect: non-scaling-stroke;
-  stroke-linejoin: round;
-}
-.strip-flag {
-  position: absolute;
-  width: 0.9rem;
-  height: 0.9rem;
-  transform: translate(-50%, -50%) rotate(45deg);
-  background: var(--color-warning);
-  border: 2px solid var(--color-canvas);
-}
-.strip ol {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  border-top: 1px solid var(--color-border);
-}
-.strip li {
-  border-left: 1px solid var(--color-border);
-}
-.strip a {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  padding: 0.6rem 0.75rem;
-  min-height: 2.75rem;
-  text-decoration: none;
-  color: var(--color-text);
-  font-weight: 500;
-}
-.strip a span {
-  font: 500 0.75rem/1.5 var(--font-mono);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-.strip a:hover {
-  color: var(--color-accent);
-  text-decoration: underline;
 }
 
 /* Timeline */
@@ -1049,9 +989,6 @@ h3 {
   .feature,
   .ex {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .strip ol {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .results {
     flex-direction: row;
@@ -1667,4 +1604,190 @@ section > *,
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+/* ---------- Hero details ---------- */
+.hero {
+  position: relative;
+  isolation: isolate;
+}
+.hero::before {
+  /* A faint dot grid behind the hero, fading out towards the edges. */
+  content: "";
+  position: absolute;
+  inset: -3rem 0 auto 0;
+  height: calc(100% + 3rem);
+  z-index: -1;
+  background-image: radial-gradient(var(--color-border) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 60% at 30% 35%, #000 25%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 30% 35%, #000 25%, transparent 75%);
+}
+.hello {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  font: 500 0.9375rem/1.6 var(--font-mono);
+  color: var(--color-text-muted);
+}
+.hello-name {
+  color: var(--color-text);
+}
+.hello-name::after {
+  content: "/";
+  margin-left: 0.75rem;
+  color: var(--color-text-muted);
+}
+.typed {
+  color: var(--color-accent);
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 3px;
+  vertical-align: -0.15em;
+  background: var(--color-accent);
+}
+
+/* ---------- Playground cards on the home page ---------- */
+.demo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+}
+.demo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-decoration: none;
+}
+.demo-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-card);
+}
+.demo-card-tag {
+  font: 500 0.75rem var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.demo-card-title {
+  font: 600 1.25rem/1.25 var(--font-display);
+}
+.demo-card-text {
+  color: var(--color-text-muted);
+}
+.demo-card-go {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+/* ---------- Motion ----------
+   Decoration only: every element is fully visible without it, and none of it
+   runs for visitors who ask their system for reduced motion. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes ping {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 45%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+@keyframes spin-in {
+  from {
+    transform: rotate(-90deg) scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes drift-up {
+  from {
+    transform: translateY(32px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-text > *,
+  .portrait {
+    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hero-text > :nth-child(2) {
+    animation-delay: 0.08s;
+  }
+  .hero-text > :nth-child(3) {
+    animation-delay: 0.16s;
+  }
+  .hero-text > :nth-child(4) {
+    animation-delay: 0.24s;
+  }
+  .hero-text > :nth-child(5) {
+    animation-delay: 0.32s;
+  }
+  .portrait {
+    animation-delay: 0.2s;
+  }
+  .caret {
+    animation: blink 1s steps(1) infinite;
+  }
+  .status-dot {
+    animation: ping 2s ease-out infinite;
+  }
+  .theme-toggle svg {
+    animation: spin-in 0.35s ease both;
+  }
+  .demo-card,
+  .feature,
+  .portrait img {
+    transition:
+      transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 0.25s,
+      border-color 0.25s;
+  }
+  .demo-card:hover,
+  .feature:hover {
+    transform: translateY(-4px);
+  }
+  .portrait:hover img {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+  /* Sections drift up as they scroll into view, in browsers that support
+     scroll-driven animations. They are never hidden, only moved. */
+  @supports (animation-timeline: view()) {
+    main > section:not(.hero) {
+      animation: drift-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
 }
