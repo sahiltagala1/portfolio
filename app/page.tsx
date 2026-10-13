@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Contact } from "@/components/Chrome";
 import { SessionStrip } from "@/components/SessionStrip";
@@ -13,14 +14,44 @@ export default function Home() {
     <>
       <main id="main">
         <section className="hero" aria-labelledby="hero-title">
-          <p className="eyebrow">Plug in · {profile.name} · {profile.role} · {profile.location}</p>
-          <h1 id="hero-title">{profile.positioning}</h1>
-          <p className="lede">{profile.summary}</p>
-          {profile.availability && <p className="lede lede-strong">{profile.availability}</p>}
-          <ul className="actions">
-            <li><Link className="btn btn-solid" href="/#flag">Explain a flag</Link></li>
-            <li><Link className="btn" href={`/work/${featured.slug}/`}>Read the dissertation case study</Link></li>
-          </ul>
+          <div className={profile.photo ? "hero-grid" : undefined}>
+            <div className="hero-text">
+              <p className="eyebrow">
+                Plug in · {profile.name} · {profile.role} · {profile.location}
+              </p>
+              <h1 id="hero-title">{profile.positioning}</h1>
+              {profile.availability && (
+                <p className="status">
+                  <span className="status-dot" aria-hidden="true" />
+                  {profile.availability}
+                </p>
+              )}
+              <p className="lede">{profile.summary}</p>
+              <ul className="actions">
+                <li>
+                  <Link className="btn btn-solid" href="/#flag">
+                    Explain a flag
+                  </Link>
+                </li>
+                <li>
+                  <Link className="btn" href={`/work/${featured.slug}/`}>
+                    Read the dissertation case study
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            {profile.photo && (
+              <figure className="portrait">
+                <Image
+                  src={profile.photo.src}
+                  alt={profile.photo.alt}
+                  width={profile.photo.width}
+                  height={profile.photo.height}
+                  priority
+                />
+              </figure>
+            )}
+          </div>
           <SessionStrip />
         </section>
 
@@ -29,8 +60,8 @@ export default function Home() {
             <p className="eyebrow">Ramp · 0 to 8 min</p>
             <h2 id="background-title">Background</h2>
             <p className="lede">
-              I worked on charging infrastructure before I studied it. The dissertation came out of knowing what
-              that data looks like from the inside.
+              I worked on charging infrastructure before I studied it. The dissertation came out of
+              knowing what that data looks like from the inside.
             </p>
           </div>
           <ol className="timeline">
@@ -40,7 +71,9 @@ export default function Home() {
                 <p className="meta">{e.meta}</p>
                 {e.points.length > 0 && (
                   <ul>
-                    {e.points.map((pt) => <li key={pt}>{pt}</li>)}
+                    {e.points.map((pt) => (
+                      <li key={pt}>{pt}</li>
+                    ))}
                   </ul>
                 )}
               </li>
@@ -56,17 +89,27 @@ export default function Home() {
 
           <article className="feature">
             <div className="feature-text">
-              <p className="eyebrow">{featured.context} · {featured.track}</p>
+              <p className="eyebrow">
+                {featured.context} · {featured.track}
+              </p>
               <h3>{featured.title}</h3>
               <p>{featured.summary}</p>
               <p>
-                The hard part was the evaluation. The mix of garages in the data shifted over time, so I split by
-                time within each garage to get results I could trust.
+                The hard part was the evaluation. The mix of garages in the data shifted over time,
+                so I split by time within each garage to get results I could trust.
               </p>
               <Tags items={featured.technologies} />
-              <p><Link className="more" href={`/work/${featured.slug}/`}>Read the case study</Link></p>
+              <p>
+                <Link className="more" href={`/work/${featured.slug}/`}>
+                  Read the case study
+                </Link>
+              </p>
               {featured.sourceUrl && (
-                <p><a className="more" href={featured.sourceUrl} rel="noopener noreferrer">View the dissertation code on GitHub</a></p>
+                <p>
+                  <a className="more" href={featured.sourceUrl} rel="noopener noreferrer">
+                    View the dissertation code on GitHub
+                  </a>
+                </p>
               )}
             </div>
             <dl className="results">
@@ -87,10 +130,18 @@ export default function Home() {
                 <p>{p.summary}</p>
                 <Tags items={p.technologies} />
                 {p.sourceUrl && (
-                  <p><a className="more" href={p.sourceUrl} rel="noopener noreferrer">View source for {p.title} on GitHub</a></p>
+                  <p>
+                    <a className="more" href={p.sourceUrl} rel="noopener noreferrer">
+                      View source for {p.title} on GitHub
+                    </a>
+                  </p>
                 )}
                 {p.liveUrl && (
-                  <p><a className="more" href={p.liveUrl} rel="noopener noreferrer">View {p.title} live</a></p>
+                  <p>
+                    <a className="more" href={p.liveUrl} rel="noopener noreferrer">
+                      View {p.title} live
+                    </a>
+                  </p>
                 )}
               </li>
             ))}
@@ -102,13 +153,15 @@ export default function Home() {
             <p className="eyebrow">Minute 52 · Flag</p>
             <h2 id="flag-title">A flag is only useful if it says why.</h2>
             <p className="lede">
-              That idea is my dissertation. Here is a small version of it you can try: one charging session, four
-              readings, and the reasons behind each verdict.
+              That idea is my dissertation. Here is a small version of it you can try: one charging
+              session, four readings, and the reasons behind each verdict.
             </p>
           </div>
           <FlagExplainer />
           <p>
-            <Link className="more" href="/playground/">Two more demos in the playground: splitting data, and roaming authorisation</Link>
+            <Link className="more" href="/playground/">
+              Two more demos in the playground: splitting data, and roaming authorisation
+            </Link>
           </p>
         </section>
 
@@ -120,7 +173,9 @@ export default function Home() {
           <ul className="note-list">
             {notes.map((n) => (
               <li key={n.slug}>
-                <h3><Link href={`/notes/${n.slug}/`}>{n.title}</Link></h3>
+                <h3>
+                  <Link href={`/notes/${n.slug}/`}>{n.title}</Link>
+                </h3>
                 <p>{n.summary}</p>
               </li>
             ))}
@@ -153,7 +208,9 @@ export default function Home() {
 function Tags({ items }: { items: string[] }) {
   return (
     <ul className="tags" aria-label="Technologies">
-      {items.map((t) => <li key={t}>{t}</li>)}
+      {items.map((t) => (
+        <li key={t}>{t}</li>
+      ))}
     </ul>
   );
 }

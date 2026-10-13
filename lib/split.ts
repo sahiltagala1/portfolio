@@ -9,9 +9,24 @@ export const MONTHS = 12;
 export const TRAIN_SHARE = 0.75;
 
 export const GARAGES = [
-  { id: "A", name: "Garage A", note: "winding down", perMonth: [40, 40, 38, 36, 34, 30, 26, 22, 18, 14, 10, 8] },
-  { id: "B", name: "Garage B", note: "steady", perMonth: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20] },
-  { id: "C", name: "Garage C", note: "opened in month 7", perMonth: [0, 0, 0, 0, 0, 0, 10, 20, 30, 40, 50, 60] },
+  {
+    id: "A",
+    name: "Garage A",
+    note: "winding down",
+    perMonth: [40, 40, 38, 36, 34, 30, 26, 22, 18, 14, 10, 8],
+  },
+  {
+    id: "B",
+    name: "Garage B",
+    note: "steady",
+    perMonth: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+  },
+  {
+    id: "C",
+    name: "Garage C",
+    note: "opened in month 7",
+    perMonth: [0, 0, 0, 0, 0, 0, 10, 20, 30, 40, 50, 60],
+  },
 ] as const;
 
 export type GarageId = (typeof GARAGES)[number]["id"];
@@ -41,7 +56,9 @@ export function split(strategy: Strategy): SplitResult {
   for (const g of GARAGES) {
     if (strategy === "chronological") {
       // One cut-off date for everyone.
-      cells[g.id] = g.perMonth.map((n, m) => (m < cutMonth ? { train: n, test: 0 } : { train: 0, test: n }));
+      cells[g.id] = g.perMonth.map((n, m) =>
+        m < cutMonth ? { train: n, test: 0 } : { train: 0, test: n },
+      );
     } else {
       // Each garage keeps its own earliest 75% of sessions for training.
       let left = Math.round(sum(g.perMonth) * TRAIN_SHARE);

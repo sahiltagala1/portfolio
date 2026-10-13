@@ -14,7 +14,9 @@ const FLAG_MINUTE = 52;
 /** The page laid out as one charging session. The drawing is decoration; the links are the content. */
 export function SessionStrip() {
   const session = buildSession();
-  const d = session.map((r, i) => `${i ? "L" : "M"}${r.minute} ${(TOP_KW - r.powerKw).toFixed(2)}`).join(" ");
+  const d = session
+    .map((r, i) => `${i ? "L" : "M"}${r.minute} ${(TOP_KW - r.powerKw).toFixed(2)}`)
+    .join(" ");
   const flag = session[FLAG_MINUTE];
   return (
     <nav className="strip" aria-label="This page as one charging session">
@@ -24,7 +26,10 @@ export function SessionStrip() {
         </svg>
         <span
           className="strip-flag"
-          style={{ left: `${(FLAG_MINUTE / SESSION_MINUTES) * 100}%`, top: `${((TOP_KW - flag.powerKw) / TOP_KW) * 100}%` }}
+          style={{
+            left: `${(FLAG_MINUTE / SESSION_MINUTES) * 100}%`,
+            top: `${((TOP_KW - flag.powerKw) / TOP_KW) * 100}%`,
+          }}
         />
       </div>
       <ol>

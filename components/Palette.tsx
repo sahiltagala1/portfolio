@@ -50,17 +50,29 @@ export function Palette({ items }: { items: PaletteItem[] }) {
   function go(item: PaletteItem | undefined) {
     if (!item) return;
     dialog.current?.close();
-    if (item.href.startsWith("http") || item.href.endsWith(".pdf")) window.location.assign(item.href);
+    if (item.href.startsWith("http") || item.href.endsWith(".pdf"))
+      window.location.assign(item.href);
     else router.push(item.href);
   }
 
   function onKeyDown(e: React.KeyboardEvent) {
     const last = matches.length - 1;
-    if (e.key === "ArrowDown") { e.preventDefault(); setActive(current >= last ? 0 : current + 1); }
-    else if (e.key === "ArrowUp") { e.preventDefault(); setActive(current <= 0 ? last : current - 1); }
-    else if (e.key === "Home") { e.preventDefault(); setActive(0); }
-    else if (e.key === "End") { e.preventDefault(); setActive(last); }
-    else if (e.key === "Enter") { e.preventDefault(); go(matches[current]); }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActive(current >= last ? 0 : current + 1);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActive(current <= 0 ? last : current - 1);
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      setActive(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      setActive(last);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      go(matches[current]);
+    }
   }
 
   return (
@@ -70,7 +82,9 @@ export function Palette({ items }: { items: PaletteItem[] }) {
       </button>
       <dialog ref={dialog} className="palette" aria-label="Jump to a page or section">
         <div className="palette-head">
-          <label htmlFor="palette-input" className="sr">Search pages and sections</label>
+          <label htmlFor="palette-input" className="sr">
+            Search pages and sections
+          </label>
           <input
             ref={input}
             id="palette-input"
@@ -84,10 +98,15 @@ export function Palette({ items }: { items: PaletteItem[] }) {
             autoComplete="off"
             spellCheck={false}
             value={query}
-            onChange={(e) => { setQuery(e.target.value); setActive(0); }}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setActive(0);
+            }}
             onKeyDown={onKeyDown}
           />
-          <button type="button" className="palette-close" onClick={() => dialog.current?.close()}>Close</button>
+          <button type="button" className="palette-close" onClick={() => dialog.current?.close()}>
+            Close
+          </button>
         </div>
         <ul id="palette-list" role="listbox" aria-label="Destinations">
           {matches.map((item, i) => (
@@ -109,7 +128,9 @@ export function Palette({ items }: { items: PaletteItem[] }) {
             Nothing matches “{query}”. Try “work”, “notes” or “contact”.
           </p>
         )}
-        <p className="palette-keys" aria-hidden="true">↑ ↓ to move · Enter to open · Esc to close</p>
+        <p className="palette-keys" aria-hidden="true">
+          ↑ ↓ to move · Enter to open · Esc to close
+        </p>
       </dialog>
     </>
   );

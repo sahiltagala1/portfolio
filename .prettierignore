@@ -1,0 +1,7 @@
+out
+out-e2e
+.next
+node_modules
+package-lock.json
+public
+next-env.d.ts

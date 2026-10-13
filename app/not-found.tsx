@@ -10,8 +10,16 @@ export default function NotFound() {
       <h1>This page isn&apos;t part of the session.</h1>
       <p className="lede">The link may be old, or the address may have a typo.</p>
       <ul className="actions">
-        <li><Link className="btn btn-solid" href="/">Go to the start</Link></li>
-        <li><Link className="btn" href="/#work">See my work</Link></li>
+        <li>
+          <Link className="btn btn-solid" href="/">
+            Go to the start
+          </Link>
+        </li>
+        <li>
+          <Link className="btn" href="/#work">
+            See my work
+          </Link>
+        </li>
       </ul>
     </main>
   );

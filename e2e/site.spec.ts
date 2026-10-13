@@ -6,7 +6,9 @@ const NOTE = "/notes/what-a-shap-value-says/";
 
 test("home states identity, proof and a next step", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("models that explain their own alarms");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "models that explain their own alarms",
+  );
   await expect(page.getByRole("link", { name: "Explain a flag" }).first()).toBeVisible();
   await expect(page.getByText("0.9268")).toBeVisible();
   await expect(page).toHaveTitle(/Sahil Tagala/);
@@ -19,8 +21,13 @@ test("navigation reaches every section and the case study", async ({ page }) => 
   }
   await page.getByRole("link", { name: "Read the case study" }).click();
   await expect(page).toHaveURL(new RegExp(CASE));
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Explainable anomaly detection");
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", new RegExp(`${CASE}$`));
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "Explainable anomaly detection",
+  );
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    new RegExp(`${CASE}$`),
+  );
 });
 
 test("picking a reading changes the explanation", async ({ page }) => {
@@ -59,7 +66,9 @@ test("no sideways scroll at 320px", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 640 });
   for (const url of ["/", CASE, "/playground/", NOTE]) {
     await page.goto(url);
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    );
     expect(overflow, url).toBeLessThanOrEqual(0);
   }
 });
@@ -80,7 +89,9 @@ for (const scheme of ["light", "dark"] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     for (const url of ["/", CASE, "/playground/", "/notes/", NOTE, "/nope/"]) {
       await page.goto(url);
-      const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze();
+      const results = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+        .analyze();
       expect(results.violations.map((v) => `${url} ${v.id}: ${v.nodes[0]?.html}`)).toEqual([]);
     }
   });
@@ -94,6 +105,7 @@ test("metadata, sitemap and robots exist", async ({ page, request }) => {
   expect((await request.get("/robots.txt")).ok()).toBe(true);
   expect((await request.get("/og.png")).ok()).toBe(true);
   const cv = page.getByRole("link", { name: "Download CV (PDF)" });
+  await expect(cv).toBeVisible();
   expect((await request.get((await cv.getAttribute("href"))!)).ok()).toBe(true);
 });
 
@@ -112,7 +124,9 @@ test("roaming demo: only NEVER while unreachable is refused", async ({ page }) =
   await expect(page.getByText("✓ Charging starts").filter({ visible: true })).toBeVisible();
   await page.getByRole("radio", { name: "NEVER" }).check();
   await page.getByRole("radio", { name: "Provider reachable" }).check();
-  await expect(page.getByText("the provider, with a live answer.").filter({ visible: true })).toBeVisible();
+  await expect(
+    page.getByText("the provider, with a live answer.").filter({ visible: true }),
+  ).toBeVisible();
 });
 
 test("notes list, note page and its demo link", async ({ page }) => {
@@ -123,7 +137,14 @@ test("notes list, note page and its demo link", async ({ page }) => {
   await expect(page).toHaveURL(/\/playground\/#flag$/);
 });
 
-test("palette: opens by shortcut, filters, navigates, and returns focus on Escape", async ({ page }) => {
+test("palette: opens by shortcut, filters, navigates, and returns focus on Escape", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(
+    isMobile,
+    "The palette button is hidden on small screens; every destination is also a link.",
+  );
   await page.goto("/");
   const opener = page.getByRole("button", { name: /Jump to/ });
   await opener.click();
@@ -143,10 +164,16 @@ test("palette: opens by shortcut, filters, navigates, and returns focus on Escap
   await expect(page.getByRole("dialog")).toBeHidden();
 });
 
-test("palette has no accessibility violations while open", async ({ page }) => {
+test("palette has no accessibility violations while open", async ({ page, isMobile }) => {
+  test.skip(
+    isMobile,
+    "The palette button is hidden on small screens; every destination is also a link.",
+  );
   await page.goto("/");
   await page.getByRole("button", { name: /Jump to/ }).click();
-  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze();
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+    .analyze();
   expect(results.violations.map((v) => `${v.id}: ${v.nodes[0]?.html}`)).toEqual([]);
 });
 
@@ -155,12 +182,16 @@ test.describe("contact form (requests are intercepted, nothing is sent)", () => 
     await page.goto("/#contact");
     await page.getByLabel("Your name").fill("Test Person");
     await page.getByLabel("Your email").fill("test@example.com");
+    await page.getByLabel("Subject").fill("Backend role");
     await page.getByLabel("Message").fill("Hello, this is a test message.");
   }
 
   test("success clears the form and says so", async ({ page }) => {
     let calls = 0;
-    await page.route("https://formspree.io/**", (route) => { calls++; return route.fulfill({ status: 200, json: { ok: true } }); });
+    await page.route("https://formspree.io/**", (route) => {
+      calls++;
+      return route.fulfill({ status: 200, json: { ok: true } });
+    });
     await fill(page);
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByText(/Message sent/)).toBeVisible();
@@ -169,7 +200,9 @@ test.describe("contact form (requests are intercepted, nothing is sent)", () => 
   });
 
   test("a server error is shown and the message is kept", async ({ page }) => {
-    await page.route("https://formspree.io/**", (route) => route.fulfill({ status: 500, json: {} }));
+    await page.route("https://formspree.io/**", (route) =>
+      route.fulfill({ status: 500, json: {} }),
+    );
     await fill(page);
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByText(/was not sent \(error 500\)/)).toBeVisible();
@@ -177,7 +210,9 @@ test.describe("contact form (requests are intercepted, nothing is sent)", () => 
   });
 
   test("rate limiting and network failure each get their own message", async ({ page }) => {
-    await page.route("https://formspree.io/**", (route) => route.fulfill({ status: 429, json: {} }));
+    await page.route("https://formspree.io/**", (route) =>
+      route.fulfill({ status: 429, json: {} }),
+    );
     await fill(page);
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByText(/Too many messages/)).toBeVisible();
@@ -189,10 +224,63 @@ test.describe("contact form (requests are intercepted, nothing is sent)", () => 
 
   test("empty required fields are blocked by the browser", async ({ page }) => {
     let calls = 0;
-    await page.route("https://formspree.io/**", (route) => { calls++; return route.fulfill({ status: 200, json: {} }); });
+    await page.route("https://formspree.io/**", (route) => {
+      calls++;
+      return route.fulfill({ status: 200, json: {} });
+    });
     await page.goto("/#contact");
     await page.getByRole("button", { name: "Send message" }).click();
     expect(calls).toBe(0);
     await expect(page.getByText(/Message sent/)).toBeHidden();
   });
+});
+
+test("theme toggle switches theme and remembers the choice", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/");
+  const html = page.locator("html");
+  const background = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  const light = await background();
+
+  await page.getByRole("button", { name: "Dark theme" }).click();
+  await expect(html).toHaveAttribute("data-theme", "dark");
+  await expect(page.getByRole("button", { name: "Dark theme" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  expect(await background()).not.toBe(light);
+
+  await page.reload();
+  await expect(html).toHaveAttribute("data-theme", "dark");
+
+  await page.getByRole("button", { name: "Match system theme" }).click();
+  await expect(html).not.toHaveAttribute("data-theme", /.+/);
+  expect(await background()).toBe(light);
+});
+
+test("dark theme chosen by hand has no accessibility violations", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Dark theme" }).click();
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+    .analyze();
+  expect(results.violations.map((v) => `${v.id}: ${v.nodes[0]?.html}`)).toEqual([]);
+});
+
+test("copy button copies the email address", async ({ page, context, browserName }) => {
+  test.skip(browserName !== "chromium", "Clipboard permissions are a Chromium feature");
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto("/#contact");
+  await page.getByRole("button", { name: "Copy email address" }).click();
+  await expect(page.getByText("Copied")).toBeVisible();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("sahiltagala1@gmail.com");
+});
+
+test("the CV button is in the header, not the contact section", async ({ page }) => {
+  await page.goto("/");
+  await expect(
+    page.locator("header").getByRole("link", { name: "Download CV (PDF)" }),
+  ).toBeVisible();
+  await expect(page.locator("#contact").getByRole("link", { name: /CV/ })).toHaveCount(0);
 });

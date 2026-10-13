@@ -7,6 +7,7 @@ import "@fontsource/ibm-plex-mono/latin-400.css";
 import "@fontsource/ibm-plex-mono/latin-500.css";
 import "./globals.css";
 import { Header } from "@/components/Chrome";
+import { themeBootScript } from "@/components/ThemeToggle";
 import { profile } from "@/lib/content";
 import { IS_PRODUCTION_URL, SITE_URL } from "@/lib/site";
 
@@ -15,7 +16,10 @@ const description =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${profile.name}, software engineer and data scientist`, template: `%s · ${profile.name}` },
+  title: {
+    default: `${profile.name}, software engineer and data scientist`,
+    template: `%s · ${profile.name}`,
+  },
   description,
   alternates: { canonical: "/" },
   robots: IS_PRODUCTION_URL ? { index: true, follow: true } : { index: false, follow: false },
@@ -25,7 +29,14 @@ export const metadata: Metadata = {
     title: `${profile.name}, software engineer and data scientist`,
     description,
     url: "/",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "A charging power trace with one flagged reading, beside the name Mohammed Sahil Tagala" }],
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "A charging power trace with one flagged reading, beside the name Mohammed Sahil Tagala",
+      },
+    ],
   },
   twitter: { card: "summary_large_image" },
 };
@@ -45,22 +56,39 @@ const person = {
   jobTitle: "Software Engineer",
   email: profile.email,
   url: SITE_URL,
-  address: { "@type": "PostalAddress", addressLocality: "Dublin", addressCountry: "IE" },
-  alumniOf: { "@type": "CollegeOrUniversity", name: "Technological University Dublin" },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Dublin",
+    addressCountry: "IE",
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Technological University Dublin",
+  },
   sameAs: profile.links.map((l) => l.href),
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IE">
+    // The boot script may set data-theme before React loads, so the attribute
+    // can differ from the server HTML on purpose.
+    <html lang="en-IE" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body>
-        <a className="skip" href="#main">Skip to content</a>
-        <noscript><style>{".palette-open{display:none}"}</style></noscript>
-        <div className="wrap">
-          <Header />
-          {children}
-        </div>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }} />
+        <a className="skip" href="#main">
+          Skip to content
+        </a>
+        <noscript>
+          <style>{".palette-open,.theme-toggle{display:none}"}</style>
+        </noscript>
+        <Header />
+        <div className="wrap">{children}</div>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }}
+        />
       </body>
     </html>
   );

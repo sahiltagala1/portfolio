@@ -28,7 +28,9 @@ export function FlagExplainer() {
                 defaultChecked={i === DEFAULT_PICK}
               />
               <span className="ex-option-body">
-                <span className="ex-mark" aria-hidden="true">{e.flagged ? "▲" : "●"}</span>
+                <span className="ex-mark" aria-hidden="true">
+                  {e.flagged ? "▲" : "●"}
+                </span>
                 <span>Minute {e.minute}</span>
                 <span className="ex-status">{e.flagged ? "Flagged" : "Normal"}</span>
               </span>
@@ -60,16 +62,23 @@ export function FlagExplainer() {
         ))}
       </div>
       <p className="ex-key">
-        <span><span className="key-line" aria-hidden="true" /> measured power</span>
-        <span><span className="key-line key-dashed" aria-hidden="true" /> expected curve</span>
-        <span><span className="key-line key-limit" aria-hidden="true" /> 7.4 kW rating</span>
+        <span>
+          <span className="key-line" aria-hidden="true" /> measured power
+        </span>
+        <span>
+          <span className="key-line key-dashed" aria-hidden="true" /> expected curve
+        </span>
+        <span>
+          <span className="key-line key-limit" aria-hidden="true" /> 7.4 kW rating
+        </span>
       </p>
 
       <div className="ex-panels">
         {explained.map((e, i) => (
           <article key={e.minute} className={`ex-panel ex-panel-${i}`}>
             <h3>
-              Minute {e.minute}: {e.reading.powerKw.toFixed(1)} kW, {e.flagged ? "flagged" : "not flagged"}
+              Minute {e.minute}: {e.reading.powerKw.toFixed(1)} kW,{" "}
+              {e.flagged ? "flagged" : "not flagged"}
             </h3>
             <p className="ex-note">{e.note}</p>
             <ul className="ex-bars">
@@ -83,7 +92,11 @@ export function FlagExplainer() {
                     <span className="ex-track" aria-hidden="true">
                       <span
                         className={toward ? "ex-bar ex-bar-toward" : "ex-bar ex-bar-away"}
-                        style={toward ? { left: "50%", width: `${width}%` } : { right: "50%", width: `${width}%` }}
+                        style={
+                          toward
+                            ? { left: "50%", width: `${width}%` }
+                            : { right: "50%", width: `${width}%` }
+                        }
                       />
                     </span>
                     <span className="ex-value">
@@ -94,17 +107,17 @@ export function FlagExplainer() {
               })}
             </ul>
             <p className="ex-sum">
-              Score {fmt(e.score)}. {e.flagged ? "Above" : "Below"} {FLAG_THRESHOLD}, so this reading is{" "}
-              <strong>{e.flagged ? "flagged" : "normal"}</strong>.
+              Score {fmt(e.score)}. {e.flagged ? "Above" : "Below"} {FLAG_THRESHOLD}, so this
+              reading is <strong>{e.flagged ? "flagged" : "normal"}</strong>.
             </p>
           </article>
         ))}
       </div>
 
       <p className="ex-caveat">
-        This is a teaching model with made-up data, far simpler than the LSTM in my dissertation. It keeps the
-        property that matters: the pushes add up exactly to the score, which is how SHAP values relate to a
-        model&apos;s output.
+        This is a teaching model with made-up data, far simpler than the LSTM in my dissertation. It
+        keeps the property that matters: the pushes add up exactly to the score, which is how SHAP
+        values relate to a model&apos;s output.
       </p>
     </div>
   );

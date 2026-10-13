@@ -17,19 +17,20 @@ Conventions left out on purpose: skill percentage bars, a wall of identical proj
 
 Nothing was invented, but several things were assumed or left out. Check each one in `lib/content.ts`.
 
-| Item | Status |
-| --- | --- |
-| Name | Full name "Mohammed Sahil Tagala" in the page title, hero and contact section; "Sahil Tagala" in the top-left corner. Both are set in `profile` (`name`, `shortName`). |
-| CV download | `public/Mohammed-Sahil-Tagala-CV.pdf` is the CV with the phone number removed. To update it, replace that file (keep the phone number out, since the site and repo are public). |
-| Numocity entries | Taken from the CV. Confirm nothing listed is confidential. |
-| Dissertation case study | Facts and numbers are taken from the README of your public repo `ev-charging-anomaly-detection`. The wording around them is a draft; correct anything that misstates what you did. |
-| Halal Food Scanner, Task Management API | One-line summaries only. Add your role, the problem, a key decision, the outcome and links. To give a project its own page, add a `caseStudy` object to it. |
-| The three notes (`lib/notes.ts`) | Drafted for you from a summary of your work and from general facts about SHAP and OCPI. They are published in your voice, so read and correct every sentence, or remove a note by deleting its entry. Add a `date` to each once approved. |
-| Split demo and roaming demo | Both use invented numbers and say so. The split demo shows my reading of "garage-stratified temporal split"; the roaming demo assumes OCPI token authorisation is close to what you worked on. Change the wording if either is off. |
-| Contact form | Hidden until you set `NEXT_PUBLIC_FORMSPREE_ID`. Create a free form at formspree.io and use the ID from its address. |
-| Supervisor name | Left out. Add only with their permission. |
-| Portrait and personal interests | Left out. |
-| Site address | Set `NEXT_PUBLIC_SITE_URL` (see below). Until it is set, the site tells search engines not to index it. |
+| Item                                    | Status                                                                                                                                                                                                                                    |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name                                    | Full name "Mohammed Sahil Tagala" in the page title, hero and contact section; "Sahil Tagala" in the top-left corner. Both are set in `profile` (`name`, `shortName`).                                                                    |
+| CV download                             | `public/Mohammed-Sahil-Tagala-CV.pdf` is the CV exactly as supplied, including the phone number. Replace that file to update it.                                                                                                          |
+| Numocity entries                        | Taken from the CV. Confirm nothing listed is confidential.                                                                                                                                                                                |
+| Dissertation case study                 | Facts and numbers are taken from the README of your public repo `ev-charging-anomaly-detection`. The wording around them is a draft; correct anything that misstates what you did.                                                        |
+| Halal Food Scanner, Task Management API | One-line summaries only. Add your role, the problem, a key decision, the outcome and links. To give a project its own page, add a `caseStudy` object to it.                                                                               |
+| The three notes (`lib/notes.ts`)        | Drafted for you from a summary of your work and from general facts about SHAP and OCPI. They are published in your voice, so read and correct every sentence, or remove a note by deleting its entry. Add a `date` to each once approved. |
+| Split demo and roaming demo             | Both use invented numbers and say so. The split demo shows my reading of "garage-stratified temporal split"; the roaming demo assumes OCPI token authorisation is close to what you worked on. Change the wording if either is off.       |
+| Contact form                            | Hidden until a Formspree form id is set, either as `contactFormId` in `lib/content.ts` or as `NEXT_PUBLIC_FORMSPREE_ID`. Create a free form at formspree.io; the id is the last part of its address.                                      |
+| Portrait                                | Not shown until `profile.photo` is set. Put the image in `public/` and fill in its path, size and alt text.                                                                                                                               |
+| Supervisor name                         | Left out. Add only with their permission.                                                                                                                                                                                                 |
+| Portrait and personal interests         | Left out.                                                                                                                                                                                                                                 |
+| Site address                            | Set `NEXT_PUBLIC_SITE_URL` (see below). Until it is set, the site tells search engines not to index it.                                                                                                                                   |
 
 All of the copy is a draft in your voice. Read it once as if a recruiter were reading it.
 
@@ -60,25 +61,25 @@ Not automated: a screen reader walkthrough and Lighthouse scores on a deployed U
 
 ## Where things live
 
-| Path | What it holds |
-| --- | --- |
-| `lib/content.ts` | Every published fact: profile, experience, projects, case studies, capabilities. Edit here. |
-| `lib/session.ts` | The pure model behind the explainer: the fictional session, the score and its split into reasons. |
-| `lib/split.ts`, `lib/roaming.ts` | Pure models behind the other two playground demos. |
-| `lib/notes.ts` | The notes. Add an object to publish a new one at `/notes/<slug>/`. |
-| `components/SplitDemo.tsx`, `RoamingDemo.tsx` | The other two demos, also radio buttons and CSS only. |
-| `components/Palette.tsx` | The jump-to palette (button in the header, or Ctrl/⌘ + K). |
-| `components/ContactForm.tsx` | The contact form. |
-| `app/playground/`, `app/notes/` | Playground and notes pages. |
-| `lib/picks.ts` | The four readings a visitor can ask about, and the sentence shown for each. |
-| `components/FlagExplainer.tsx` | The explainer, built from radio buttons and CSS. |
-| `components/SessionChart.tsx`, `SessionStrip.tsx` | Server-rendered SVG drawings of the session. |
-| `app/page.tsx` | Home page. |
-| `app/work/[slug]/page.tsx` | Case study pages, one per project that has a `caseStudy`. |
-| `app/globals.css` | Design tokens (colour, type, spacing) and all styles. Light and dark themes follow the visitor's system setting. |
-| `app/sitemap.ts`, `app/robots.ts`, `app/not-found.tsx`, `app/icon.svg` | Sitemap, robots rules, 404 page, icon. |
-| `public/og.png` | Social preview image. Regenerate with `node scripts/make-og.mjs`. |
-| `tests/`, `e2e/` | Unit tests and browser tests. |
+| Path                                                                   | What it holds                                                                                                    |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `lib/content.ts`                                                       | Every published fact: profile, experience, projects, case studies, capabilities. Edit here.                      |
+| `lib/session.ts`                                                       | The pure model behind the explainer: the fictional session, the score and its split into reasons.                |
+| `lib/split.ts`, `lib/roaming.ts`                                       | Pure models behind the other two playground demos.                                                               |
+| `lib/notes.ts`                                                         | The notes. Add an object to publish a new one at `/notes/<slug>/`.                                               |
+| `components/SplitDemo.tsx`, `RoamingDemo.tsx`                          | The other two demos, also radio buttons and CSS only.                                                            |
+| `components/Palette.tsx`                                               | The jump-to palette (button in the header, or Ctrl/⌘ + K).                                                       |
+| `components/ContactForm.tsx`                                           | The contact form.                                                                                                |
+| `app/playground/`, `app/notes/`                                        | Playground and notes pages.                                                                                      |
+| `lib/picks.ts`                                                         | The four readings a visitor can ask about, and the sentence shown for each.                                      |
+| `components/FlagExplainer.tsx`                                         | The explainer, built from radio buttons and CSS.                                                                 |
+| `components/SessionChart.tsx`, `SessionStrip.tsx`                      | Server-rendered SVG drawings of the session.                                                                     |
+| `app/page.tsx`                                                         | Home page.                                                                                                       |
+| `app/work/[slug]/page.tsx`                                             | Case study pages, one per project that has a `caseStudy`.                                                        |
+| `app/globals.css`                                                      | Design tokens (colour, type, spacing) and all styles. Light and dark themes follow the visitor's system setting. |
+| `app/sitemap.ts`, `app/robots.ts`, `app/not-found.tsx`, `app/icon.svg` | Sitemap, robots rules, 404 page, icon.                                                                           |
+| `public/og.png`                                                        | Social preview image. Regenerate with `node scripts/make-og.mjs`.                                                |
+| `tests/`, `e2e/`                                                       | Unit tests and browser tests.                                                                                    |
 
 ### Add a project
 
@@ -92,7 +93,8 @@ Add an object to `projects` in `lib/content.ts`. Leave out any optional field yo
 - **The demos without JavaScript:** selection is a native radio group, and CSS `:has()` shows the matching explanation. It works by keyboard (arrow keys), by touch and with scripts disabled. Browsers without `:has()` show all four explanations at once.
 - **The model is a teaching simplification.** It uses made-up data and four hand-written features, and the page says so. It is not the dissertation's LSTM. It keeps one true property of SHAP: the per-feature pushes add up exactly to the score.
 - **Fonts** are self-hosted through `@fontsource` packages, so the build needs no network access to a font service.
-- **Motion:** one short opacity transition, disabled under `prefers-reduced-motion`.
+- **Themes:** light, dark, or match the system, chosen from the header. Every colour is written once with CSS `light-dark()`, and a tiny script in `<head>` applies a saved choice before the page paints.
+- **Motion:** short hover transitions and one opacity transition, disabled under `prefers-reduced-motion`.
 - **Privacy:** no analytics, trackers, cookies or third-party requests.
 
 ## Deploy

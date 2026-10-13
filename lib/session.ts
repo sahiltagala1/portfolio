@@ -128,7 +128,10 @@ export function explain(session: Reading[], minute: number): Explanation {
     },
   ];
 
-  const score = round(contributions.reduce((sum, c) => sum + c.value, 0), 2);
+  const score = round(
+    contributions.reduce((sum, c) => sum + c.value, 0),
+    2,
+  );
   return { minute, reading: now, contributions, score, flagged: score > FLAG_THRESHOLD };
 }
 

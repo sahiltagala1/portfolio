@@ -3,7 +3,8 @@ import Link from "next/link";
 import { Contact } from "@/components/Chrome";
 import { notes } from "@/lib/notes";
 
-const description = "Short engineering notes by Mohammed Sahil Tagala on evaluation, explainability and EV charging protocols.";
+const description =
+  "Short engineering notes by Mohammed Sahil Tagala on evaluation, explainability and EV charging protocols.";
 
 export const metadata: Metadata = {
   title: "Notes",
@@ -24,7 +25,9 @@ export default function Notes() {
         <ul className="note-list">
           {notes.map((n) => (
             <li key={n.slug}>
-              <h2><Link href={`/notes/${n.slug}/`}>{n.title}</Link></h2>
+              <h2>
+                <Link href={`/notes/${n.slug}/`}>{n.title}</Link>
+              </h2>
               <p>{n.summary}</p>
             </li>
           ))}
