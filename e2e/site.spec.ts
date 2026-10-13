@@ -242,8 +242,11 @@ test("theme toggle switches theme and remembers the choice", async ({ page }) =>
   const background = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
   const light = await background();
 
-  await page.getByRole("button", { name: "Switch to dark theme" }).click();
-  await expect(html).toHaveAttribute("data-theme", "dark");
+  // The button only works once the page's script has loaded, so retry the first click.
+  await expect(async () => {
+    await page.getByRole("button", { name: "Switch to dark theme" }).click({ timeout: 1000 });
+    await expect(html).toHaveAttribute("data-theme", "dark", { timeout: 1000 });
+  }).toPass();
   await expect(page.getByRole("button", { name: "Switch to light theme" })).toBeVisible();
   expect(await background()).not.toBe(light);
 
@@ -264,7 +267,10 @@ test("theme toggle starts from the system setting", async ({ page }) => {
 test("dark theme chosen by hand has no accessibility violations", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto("/");
-  await page.getByRole("button", { name: "Switch to dark theme" }).click();
+  await expect(async () => {
+    await page.getByRole("button", { name: "Switch to dark theme" }).click({ timeout: 1000 });
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark", { timeout: 1000 });
+  }).toPass();
   const results = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
     .analyze();
