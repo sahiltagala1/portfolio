@@ -18,7 +18,13 @@ export async function generateMetadata(props: PageProps<"/notes/[slug]">): Promi
     title: note.title,
     description: note.summary,
     alternates: { canonical: `/notes/${note.slug}/` },
-    openGraph: { type: "article", title: note.title, description: note.summary, url: `/notes/${note.slug}/`, images: ["/og.png"] },
+    openGraph: {
+      type: "article",
+      title: note.title,
+      description: note.summary,
+      url: `/notes/${note.slug}/`,
+      images: ["/og.png"],
+    },
   };
 }
 
@@ -34,18 +40,29 @@ export default async function NotePage(props: PageProps<"/notes/[slug]">) {
       <main id="main" className="case">
         <article className="note">
           <header className="case-head">
-            <p className="eyebrow"><Link href="/notes/">Notes</Link>{note.date ? ` · ${note.date}` : ""}</p>
+            <p className="eyebrow">
+              <Link href="/notes/">Notes</Link>
+              {note.date ? ` · ${note.date}` : ""}
+            </p>
             <h1>{note.title}</h1>
             <p className="lede">{note.summary}</p>
           </header>
           <div className="note-body">
-            {note.body.map((p) => <p key={p}>{p}</p>)}
+            {note.body.map((p) => (
+              <p key={p}>{p}</p>
+            ))}
           </div>
-          <p><Link className="btn btn-solid" href={note.demo.href}>{note.demo.label}</Link></p>
+          <p>
+            <Link className="btn btn-solid" href={note.demo.href}>
+              {note.demo.label}
+            </Link>
+          </p>
         </article>
         <p className="case-next">
           <span className="eyebrow">Next note</span>
-          <Link className="more" href={`/notes/${next.slug}/`}>{next.title}</Link>
+          <Link className="more" href={`/notes/${next.slug}/`}>
+            {next.title}
+          </Link>
         </p>
       </main>
       <Contact />

@@ -28,13 +28,21 @@ export type Outcome = {
 };
 
 export function authorize(whitelist: Whitelist, providerReachable: boolean): Outcome {
-  if (!WHITELISTS.includes(whitelist)) throw new RangeError(`Unknown whitelist type: ${String(whitelist)}`);
+  if (!WHITELISTS.includes(whitelist))
+    throw new RangeError(`Unknown whitelist type: ${String(whitelist)}`);
 
-  const steps = ["Driver taps the card at the charger.", `Operator looks the card up. Its whitelist setting is ${whitelist}.`];
+  const steps = [
+    "Driver taps the card at the charger.",
+    `Operator looks the card up. Its whitelist setting is ${whitelist}.`,
+  ];
   const base = { whitelist, providerReachable };
 
   if (whitelist === "ALWAYS") {
-    steps.push("Operator does not contact the provider.", "Operator accepts the stored copy of the card.", "Charging starts.");
+    steps.push(
+      "Operator does not contact the provider.",
+      "Operator accepts the stored copy of the card.",
+      "Charging starts.",
+    );
     return { ...base, allowed: true, decidedBy: "stored copy", askedProvider: false, steps };
   }
 

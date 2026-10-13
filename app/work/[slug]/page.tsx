@@ -18,7 +18,13 @@ export async function generateMetadata(props: PageProps<"/work/[slug]">): Promis
     title: project.title,
     description: project.summary,
     alternates: { canonical: `/work/${project.slug}/` },
-    openGraph: { type: "article", title: project.title, description: project.summary, url: `/work/${project.slug}/`, images: ["/og.png"] },
+    openGraph: {
+      type: "article",
+      title: project.title,
+      description: project.summary,
+      url: `/work/${project.slug}/`,
+      images: ["/og.png"],
+    },
   };
 }
 
@@ -32,7 +38,9 @@ export default async function CaseStudyPage(props: PageProps<"/work/[slug]">) {
     <>
       <main id="main" className="case">
         <header className="case-head">
-          <p className="eyebrow"><Link href="/#work">Work</Link> · Case study</p>
+          <p className="eyebrow">
+            <Link href="/#work">Work</Link> · Case study
+          </p>
           <h1>{project.title}</h1>
           <p className="lede">{project.summary}</p>
           <dl className="facts">
@@ -47,33 +55,49 @@ export default async function CaseStudyPage(props: PageProps<"/work/[slug]">) {
 
         <section aria-labelledby="problem">
           <h2 id="problem">The problem</h2>
-          {cs.problem.map((p) => <p key={p}>{p}</p>)}
+          {cs.problem.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
         </section>
 
         <section aria-labelledby="approach">
           <h2 id="approach">The approach</h2>
-          {cs.approach.map((p) => <p key={p}>{p}</p>)}
+          {cs.approach.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
           <p>
-            <Link className="more" href="/#flag">Try a simplified version of the idea</Link>
+            <Link className="more" href="/#flag">
+              Try a simplified version of the idea
+            </Link>
           </p>
         </section>
 
         <section aria-labelledby="decisions">
-          <h2 id="decisions">{cs.decisions.length > 1 ? "Decisions that mattered" : "The decision that mattered"}</h2>
+          <h2 id="decisions">
+            {cs.decisions.length > 1 ? "Decisions that mattered" : "The decision that mattered"}
+          </h2>
           {cs.decisions.map((d) => (
             <div key={d.title} className="decision">
               <h3>{d.title}</h3>
               {d.alternative && (
-                <p><span className="tag-label">What went wrong first</span>{d.alternative}</p>
+                <p>
+                  <span className="tag-label">What went wrong first</span>
+                  {d.alternative}
+                </p>
               )}
-              <p><span className="tag-label">What I did</span>{d.approach}</p>
+              <p>
+                <span className="tag-label">What I did</span>
+                {d.approach}
+              </p>
             </div>
           ))}
         </section>
 
         <section aria-labelledby="outcome">
           <h2 id="outcome">The outcome</h2>
-          {cs.outcome.map((p) => <p key={p}>{p}</p>)}
+          {cs.outcome.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
           {cs.results && (
             <dl className="results results-row">
               {cs.results.map((r) => (
@@ -89,13 +113,29 @@ export default async function CaseStudyPage(props: PageProps<"/work/[slug]">) {
               <table className="cmp">
                 <caption>{cs.comparison.caption}</caption>
                 <thead>
-                  <tr>{cs.comparison.columns.map((c) => <th key={c} scope="col">{c}</th>)}</tr>
+                  <tr>
+                    {cs.comparison.columns.map((c) => (
+                      <th key={c} scope="col">
+                        {c}
+                      </th>
+                    ))}
+                  </tr>
                 </thead>
                 <tbody>
                   {cs.comparison.rows.map((row, i) => (
-                    <tr key={row[0]} className={i === cs.comparison!.highlight ? "cmp-mine" : undefined}>
-                      <th scope="row">{row[0]}{i === cs.comparison!.highlight && <span className="cmp-tag"> · this work</span>}</th>
-                      {row.slice(1).map((v, j) => <td key={j}>{v}</td>)}
+                    <tr
+                      key={row[0]}
+                      className={i === cs.comparison!.highlight ? "cmp-mine" : undefined}
+                    >
+                      <th scope="row">
+                        {row[0]}
+                        {i === cs.comparison!.highlight && (
+                          <span className="cmp-tag"> · this work</span>
+                        )}
+                      </th>
+                      {row.slice(1).map((v, j) => (
+                        <td key={j}>{v}</td>
+                      ))}
                     </tr>
                   ))}
                 </tbody>
@@ -108,17 +148,25 @@ export default async function CaseStudyPage(props: PageProps<"/work/[slug]">) {
           <section aria-labelledby="limits">
             <h2 id="limits">What this does not show</h2>
             <ul className="limits">
-              {cs.limitations.map((l) => <li key={l}>{l}</li>)}
+              {cs.limitations.map((l) => (
+                <li key={l}>{l}</li>
+              ))}
             </ul>
           </section>
         )}
 
         {project.sourceUrl && (
-          <p><a className="btn btn-solid" href={project.sourceUrl} rel="noopener noreferrer">View the code and notebooks on GitHub</a></p>
+          <p>
+            <a className="btn btn-solid" href={project.sourceUrl} rel="noopener noreferrer">
+              View the code and notebooks on GitHub
+            </a>
+          </p>
         )}
 
         <p className="case-next">
-          <Link className="btn" href="/#work">See the rest of my work</Link>
+          <Link className="btn" href="/#work">
+            See the rest of my work
+          </Link>
         </p>
       </main>
       <Contact />

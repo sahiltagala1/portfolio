@@ -12,14 +12,18 @@ describe("split model", () => {
     }
   });
 
-  it.each(["chronological", "stratified"] as const)("%s never tests on sessions older than training ones", (s) => {
-    const r = split(s);
-    for (const g of GARAGES) {
-      const firstTest = r.cells[g.id].findIndex((c) => c.test > 0);
-      const lastTrain = r.cells[g.id].findLastIndex((c) => c.train > 0);
-      if (firstTest !== -1 && lastTrain !== -1) expect(firstTest).toBeGreaterThanOrEqual(lastTrain);
-    }
-  });
+  it.each(["chronological", "stratified"] as const)(
+    "%s never tests on sessions older than training ones",
+    (s) => {
+      const r = split(s);
+      for (const g of GARAGES) {
+        const firstTest = r.cells[g.id].findIndex((c) => c.test > 0);
+        const lastTrain = r.cells[g.id].findLastIndex((c) => c.train > 0);
+        if (firstTest !== -1 && lastTrain !== -1)
+          expect(firstTest).toBeGreaterThanOrEqual(lastTrain);
+      }
+    },
+  );
 
   it("a split by date alone tests on a very different mix of garages", () => {
     const r = split("chronological");

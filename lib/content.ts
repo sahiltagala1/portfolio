@@ -116,7 +116,10 @@ export const projects: Project[] = [
         { label: "Context", value: "MSc dissertation, TU Dublin" },
         { label: "Year", value: "2026" },
         { label: "Role", value: "Sole author, supervised" },
-        { label: "Data", value: "ACN-Data (Lee et al., 2019): 15,700 sessions, 3 sites, 7 garages" },
+        {
+          label: "Data",
+          value: "ACN-Data (Lee et al., 2019): 15,700 sessions, 3 sites, 7 garages",
+        },
       ],
       problem: [
         "A detector that only says “this session is abnormal” leaves the person on the other end to work out why. In charging infrastructure, that person is an operator deciding whether to send someone to a charger.",
@@ -161,7 +164,8 @@ export const projects: Project[] = [
         { label: "AUC-ROC", value: "0.9869" },
       ],
       comparison: {
-        caption: "Test-set results. The supervised LSTM is a reference that sees fault labels; the other three do not.",
+        caption:
+          "Test-set results. The supervised LSTM is a reference that sees fault labels; the other three do not.",
         columns: ["Model", "F1", "False positive rate", "AUC-ROC", "AUPRC"],
         rows: [
           ["Threshold rule", "0.7135", "0.1415", "0.8297", "0.7297"],
@@ -250,7 +254,8 @@ export const capabilities = [
   {
     title: "Training models on sequences and images",
     body: "LSTMs for time series, CNNs and transfer learning for images, XGBoost and scikit-learn where they fit.",
-    evidence: "Dissertation, Customer Churn Prediction, Facial Age Estimation, EEG Motor Imagery Classifier",
+    evidence:
+      "Dissertation, Customer Churn Prediction, Facial Age Estimation, EEG Motor Imagery Classifier",
   },
   {
     title: "Explaining what a model did",

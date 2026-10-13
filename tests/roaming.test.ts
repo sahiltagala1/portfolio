@@ -11,7 +11,11 @@ describe("roaming authorisation model", () => {
 
   it("every other setting uses the live answer when the provider is reachable", () => {
     for (const w of ["ALLOWED", "ALLOWED_OFFLINE", "NEVER"] as const) {
-      expect(authorize(w, true)).toMatchObject({ allowed: true, askedProvider: true, decidedBy: "live answer" });
+      expect(authorize(w, true)).toMatchObject({
+        allowed: true,
+        askedProvider: true,
+        decidedBy: "live answer",
+      });
     }
   });
 

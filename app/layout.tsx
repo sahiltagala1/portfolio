@@ -15,7 +15,10 @@ const description =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${profile.name}, software engineer and data scientist`, template: `%s · ${profile.name}` },
+  title: {
+    default: `${profile.name}, software engineer and data scientist`,
+    template: `%s · ${profile.name}`,
+  },
   description,
   alternates: { canonical: "/" },
   robots: IS_PRODUCTION_URL ? { index: true, follow: true } : { index: false, follow: false },
@@ -25,7 +28,14 @@ export const metadata: Metadata = {
     title: `${profile.name}, software engineer and data scientist`,
     description,
     url: "/",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "A charging power trace with one flagged reading, beside the name Mohammed Sahil Tagala" }],
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "A charging power trace with one flagged reading, beside the name Mohammed Sahil Tagala",
+      },
+    ],
   },
   twitter: { card: "summary_large_image" },
 };
@@ -54,13 +64,20 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en-IE">
       <body>
-        <a className="skip" href="#main">Skip to content</a>
-        <noscript><style>{".palette-open{display:none}"}</style></noscript>
+        <a className="skip" href="#main">
+          Skip to content
+        </a>
+        <noscript>
+          <style>{".palette-open{display:none}"}</style>
+        </noscript>
         <div className="wrap">
           <Header />
           {children}
         </div>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }}
+        />
       </body>
     </html>
   );

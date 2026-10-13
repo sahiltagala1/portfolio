@@ -6,7 +6,9 @@ const NOTE = "/notes/what-a-shap-value-says/";
 
 test("home states identity, proof and a next step", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("models that explain their own alarms");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "models that explain their own alarms",
+  );
   await expect(page.getByRole("link", { name: "Explain a flag" }).first()).toBeVisible();
   await expect(page.getByText("0.9268")).toBeVisible();
   await expect(page).toHaveTitle(/Sahil Tagala/);
@@ -19,8 +21,13 @@ test("navigation reaches every section and the case study", async ({ page }) => 
   }
   await page.getByRole("link", { name: "Read the case study" }).click();
   await expect(page).toHaveURL(new RegExp(CASE));
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Explainable anomaly detection");
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", new RegExp(`${CASE}$`));
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "Explainable anomaly detection",
+  );
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    new RegExp(`${CASE}$`),
+  );
 });
 
 test("picking a reading changes the explanation", async ({ page }) => {
@@ -59,7 +66,9 @@ test("no sideways scroll at 320px", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 640 });
   for (const url of ["/", CASE, "/playground/", NOTE]) {
     await page.goto(url);
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    );
     expect(overflow, url).toBeLessThanOrEqual(0);
   }
 });
@@ -80,7 +89,9 @@ for (const scheme of ["light", "dark"] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     for (const url of ["/", CASE, "/playground/", "/notes/", NOTE, "/nope/"]) {
       await page.goto(url);
-      const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze();
+      const results = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+        .analyze();
       expect(results.violations.map((v) => `${url} ${v.id}: ${v.nodes[0]?.html}`)).toEqual([]);
     }
   });
@@ -112,7 +123,9 @@ test("roaming demo: only NEVER while unreachable is refused", async ({ page }) =
   await expect(page.getByText("✓ Charging starts").filter({ visible: true })).toBeVisible();
   await page.getByRole("radio", { name: "NEVER" }).check();
   await page.getByRole("radio", { name: "Provider reachable" }).check();
-  await expect(page.getByText("the provider, with a live answer.").filter({ visible: true })).toBeVisible();
+  await expect(
+    page.getByText("the provider, with a live answer.").filter({ visible: true }),
+  ).toBeVisible();
 });
 
 test("notes list, note page and its demo link", async ({ page }) => {
@@ -123,7 +136,9 @@ test("notes list, note page and its demo link", async ({ page }) => {
   await expect(page).toHaveURL(/\/playground\/#flag$/);
 });
 
-test("palette: opens by shortcut, filters, navigates, and returns focus on Escape", async ({ page }) => {
+test("palette: opens by shortcut, filters, navigates, and returns focus on Escape", async ({
+  page,
+}) => {
   await page.goto("/");
   const opener = page.getByRole("button", { name: /Jump to/ });
   await opener.click();
@@ -146,7 +161,9 @@ test("palette: opens by shortcut, filters, navigates, and returns focus on Escap
 test("palette has no accessibility violations while open", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: /Jump to/ }).click();
-  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze();
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+    .analyze();
   expect(results.violations.map((v) => `${v.id}: ${v.nodes[0]?.html}`)).toEqual([]);
 });
 
@@ -160,7 +177,10 @@ test.describe("contact form (requests are intercepted, nothing is sent)", () => 
 
   test("success clears the form and says so", async ({ page }) => {
     let calls = 0;
-    await page.route("https://formspree.io/**", (route) => { calls++; return route.fulfill({ status: 200, json: { ok: true } }); });
+    await page.route("https://formspree.io/**", (route) => {
+      calls++;
+      return route.fulfill({ status: 200, json: { ok: true } });
+    });
     await fill(page);
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByText(/Message sent/)).toBeVisible();
@@ -169,7 +189,9 @@ test.describe("contact form (requests are intercepted, nothing is sent)", () => 
   });
 
   test("a server error is shown and the message is kept", async ({ page }) => {
-    await page.route("https://formspree.io/**", (route) => route.fulfill({ status: 500, json: {} }));
+    await page.route("https://formspree.io/**", (route) =>
+      route.fulfill({ status: 500, json: {} }),
+    );
     await fill(page);
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByText(/was not sent \(error 500\)/)).toBeVisible();
@@ -177,7 +199,9 @@ test.describe("contact form (requests are intercepted, nothing is sent)", () => 
   });
 
   test("rate limiting and network failure each get their own message", async ({ page }) => {
-    await page.route("https://formspree.io/**", (route) => route.fulfill({ status: 429, json: {} }));
+    await page.route("https://formspree.io/**", (route) =>
+      route.fulfill({ status: 429, json: {} }),
+    );
     await fill(page);
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByText(/Too many messages/)).toBeVisible();
@@ -189,7 +213,10 @@ test.describe("contact form (requests are intercepted, nothing is sent)", () => 
 
   test("empty required fields are blocked by the browser", async ({ page }) => {
     let calls = 0;
-    await page.route("https://formspree.io/**", (route) => { calls++; return route.fulfill({ status: 200, json: {} }); });
+    await page.route("https://formspree.io/**", (route) => {
+      calls++;
+      return route.fulfill({ status: 200, json: {} });
+    });
     await page.goto("/#contact");
     await page.getByRole("button", { name: "Send message" }).click();
     expect(calls).toBe(0);

@@ -10,12 +10,22 @@ export function RoamingDemo() {
   return (
     <div className="ro">
       <fieldset className="demo-picks">
-        <legend>The card&apos;s whitelist setting, chosen in advance by the driver&apos;s provider</legend>
+        <legend>
+          The card&apos;s whitelist setting, chosen in advance by the driver&apos;s provider
+        </legend>
         <div className="demo-options">
           {WHITELISTS.map((w, i) => (
             <label key={w} className="demo-option">
-              <input type="radio" name="whitelist" id={`wl-${i}`} className={`demo-radio ro-w-${i}`} defaultChecked={i === 3} />
-              <span className="demo-option-body"><code>{w}</code></span>
+              <input
+                type="radio"
+                name="whitelist"
+                id={`wl-${i}`}
+                className={`demo-radio ro-w-${i}`}
+                defaultChecked={i === 3}
+              />
+              <span className="demo-option-body">
+                <code>{w}</code>
+              </span>
             </label>
           ))}
         </div>
@@ -25,7 +35,13 @@ export function RoamingDemo() {
         <div className="demo-options">
           {LINKS.map((l, i) => (
             <label key={l.label} className="demo-option">
-              <input type="radio" name="link" id={`link-${i}`} className={`demo-radio ro-l-${i}`} defaultChecked={i === 1} />
+              <input
+                type="radio"
+                name="link"
+                id={`link-${i}`}
+                className={`demo-radio ro-l-${i}`}
+                defaultChecked={i === 1}
+              />
               <span className="demo-option-body">{l.label}</span>
             </label>
           ))}
@@ -42,9 +58,13 @@ export function RoamingDemo() {
                   {o.allowed ? "✓ Charging starts" : "✕ Charging refused"}
                 </span>
               </h3>
-              <p className="ro-meaning"><code>{w}</code>: {WHITELIST_MEANING[w]}</p>
+              <p className="ro-meaning">
+                <code>{w}</code>: {WHITELIST_MEANING[w]}
+              </p>
               <ol className="ro-steps">
-                {o.steps.map((s) => <li key={s}>{s}</li>)}
+                {o.steps.map((s) => (
+                  <li key={s}>{s}</li>
+                ))}
               </ol>
               <p className="demo-verdict">
                 Decided by:{" "}
@@ -61,8 +81,9 @@ export function RoamingDemo() {
         }),
       )}
       <p className="demo-caveat">
-        A simplified picture of the whitelist types in OCPI, the roaming protocol I worked with at Numocity. Here the
-        provider always says yes when it can be reached, and with <code>ALLOWED</code> the operator chooses to ask.
+        A simplified picture of the whitelist types in OCPI, the roaming protocol I worked with at
+        Numocity. Here the provider always says yes when it can be reached, and with{" "}
+        <code>ALLOWED</code> the operator chooses to ask.
       </p>
     </div>
   );

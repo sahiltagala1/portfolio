@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
-  FLAG_THRESHOLD, MAX_RATIO, RATED_KW, SESSION_MINUTES,
-  buildSession, expectedPower, explain, flaggedMinutes, push,
+  FLAG_THRESHOLD,
+  MAX_RATIO,
+  RATED_KW,
+  SESSION_MINUTES,
+  buildSession,
+  expectedPower,
+  explain,
+  flaggedMinutes,
+  push,
 } from "@/lib/session";
 
 const session = buildSession();

@@ -3,10 +3,7 @@
 import { useRef, useState } from "react";
 
 type State =
-  | { kind: "idle" }
-  | { kind: "sending" }
-  | { kind: "sent" }
-  | { kind: "error"; message: string };
+  { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "error"; message: string };
 
 const TIMEOUT_MS = 15000;
 
@@ -37,11 +34,21 @@ export function ContactForm({ formId, fallback }: { formId: string; fallback: st
         form.current?.reset();
         setState({ kind: "sent" });
       } else if (res.status === 429) {
-        setState({ kind: "error", message: "Too many messages were sent in a short time. Wait a minute, then send again." });
+        setState({
+          kind: "error",
+          message: "Too many messages were sent in a short time. Wait a minute, then send again.",
+        });
       } else if (res.status === 422) {
-        setState({ kind: "error", message: "The form service rejected one of the fields. Check the email address, then send again." });
+        setState({
+          kind: "error",
+          message:
+            "The form service rejected one of the fields. Check the email address, then send again.",
+        });
       } else {
-        setState({ kind: "error", message: `The message was not sent (error ${res.status}). ${fallback}` });
+        setState({
+          kind: "error",
+          message: `The message was not sent (error ${res.status}). ${fallback}`,
+        });
       }
     } catch (err) {
       const timedOut = err instanceof DOMException && err.name === "AbortError";
@@ -64,11 +71,25 @@ export function ContactForm({ formId, fallback }: { formId: string; fallback: st
       </div>
       <div className="field">
         <label htmlFor="cf-email">Your email</label>
-        <input id="cf-email" name="email" type="email" autoComplete="email" required maxLength={200} />
+        <input
+          id="cf-email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          required
+          maxLength={200}
+        />
       </div>
       <div className="field field-wide">
         <label htmlFor="cf-message">Message</label>
-        <textarea id="cf-message" name="message" required minLength={10} maxLength={3000} rows={5} />
+        <textarea
+          id="cf-message"
+          name="message"
+          required
+          minLength={10}
+          maxLength={3000}
+          rows={5}
+        />
       </div>
       {/* Honeypot: people never see or fill this, simple bots do. */}
       <div className="sr" aria-hidden="true">
@@ -80,8 +101,12 @@ export function ContactForm({ formId, fallback }: { formId: string; fallback: st
           {state.kind === "sending" ? "Sending…" : "Send message"}
         </button>
         <p className="form-status" role="status" aria-live="polite">
-          {state.kind === "sent" && <span className="form-ok">✓ Message sent. Your message has left this page.</span>}
-          {state.kind === "error" && <span className="form-error">✕ {state.message} Your message is still in the form.</span>}
+          {state.kind === "sent" && (
+            <span className="form-ok">✓ Message sent. Your message has left this page.</span>
+          )}
+          {state.kind === "error" && (
+            <span className="form-error">✕ {state.message} Your message is still in the form.</span>
+          )}
         </p>
       </div>
     </form>
