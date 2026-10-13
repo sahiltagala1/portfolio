@@ -104,7 +104,7 @@ test("metadata, sitemap and robots exist", async ({ page, request }) => {
   expect((await request.get("/sitemap.xml")).ok()).toBe(true);
   expect((await request.get("/robots.txt")).ok()).toBe(true);
   expect((await request.get("/og.png")).ok()).toBe(true);
-  const cv = page.getByRole("link", { name: "Download CV (PDF)" });
+  const cv = page.getByRole("link", { name: "CV (opens the PDF in a new tab)" });
   await expect(cv).toBeVisible();
   expect((await request.get((await cv.getAttribute("href"))!)).ok()).toBe(true);
 });
@@ -242,26 +242,29 @@ test("theme toggle switches theme and remembers the choice", async ({ page }) =>
   const background = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
   const light = await background();
 
-  await page.getByRole("button", { name: "Dark theme" }).click();
+  await page.getByRole("button", { name: "Switch to dark theme" }).click();
   await expect(html).toHaveAttribute("data-theme", "dark");
-  await expect(page.getByRole("button", { name: "Dark theme" })).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
+  await expect(page.getByRole("button", { name: "Switch to light theme" })).toBeVisible();
   expect(await background()).not.toBe(light);
 
   await page.reload();
   await expect(html).toHaveAttribute("data-theme", "dark");
 
-  await page.getByRole("button", { name: "Match system theme" }).click();
-  await expect(html).not.toHaveAttribute("data-theme", /.+/);
+  await page.getByRole("button", { name: "Switch to light theme" }).click();
+  await expect(html).toHaveAttribute("data-theme", "light");
   expect(await background()).toBe(light);
+});
+
+test("theme toggle starts from the system setting", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/");
+  await expect(page.getByRole("button", { name: "Switch to light theme" })).toBeVisible();
 });
 
 test("dark theme chosen by hand has no accessibility violations", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto("/");
-  await page.getByRole("button", { name: "Dark theme" }).click();
+  await page.getByRole("button", { name: "Switch to dark theme" }).click();
   const results = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
     .analyze();
@@ -277,10 +280,20 @@ test("copy button copies the email address", async ({ page, context, browserName
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("sahiltagala1@gmail.com");
 });
 
-test("the CV button is in the header, not the contact section", async ({ page }) => {
+test("the CV link is in the header, opens in a new tab, and is not in the contact section", async ({
+  page,
+}) => {
   await page.goto("/");
-  await expect(
-    page.locator("header").getByRole("link", { name: "Download CV (PDF)" }),
-  ).toBeVisible();
+  const cv = page.locator("header").getByRole("link", { name: "CV (opens the PDF in a new tab)" });
+  await expect(cv).toBeVisible();
+  await expect(cv).toHaveAttribute("target", "_blank");
+  await expect(cv).not.toHaveAttribute("download");
   await expect(page.locator("#contact").getByRole("link", { name: /CV/ })).toHaveCount(0);
+});
+
+test("the portrait is shown with alt text", async ({ page }) => {
+  await page.goto("/");
+  const photo = page.getByRole("img", { name: "Mohammed Sahil Tagala" });
+  await expect(photo).toBeVisible();
+  expect(await photo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
 });

@@ -1,11 +1,12 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { MonitorIcon, MoonIcon, SunIcon } from "./Icons";
+import { MoonIcon, SunIcon } from "./Icons";
 
-type Theme = "light" | "dark" | "system";
+type Theme = "light" | "dark";
 
 const STORAGE_KEY = "theme";
+const DARK_QUERY = "(prefers-color-scheme: dark)";
 
 /**
  * Runs in <head> before the page paints, so a saved choice applies without a
@@ -13,54 +14,48 @@ const STORAGE_KEY = "theme";
  */
 export const themeBootScript = `try{var t=localStorage.getItem("${STORAGE_KEY}");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
 
-const OPTIONS: Array<{ value: Theme; label: string; Icon: typeof SunIcon }> = [
-  { value: "light", label: "Light theme", Icon: SunIcon },
-  { value: "dark", label: "Dark theme", Icon: MoonIcon },
-  { value: "system", label: "Match system theme", Icon: MonitorIcon },
-];
-
-// The current theme lives on <html data-theme>. Reading it from there keeps
-// one source of truth, shared with the boot script above.
+// Until a visitor clicks, the site follows their system setting. The theme in
+// use is therefore the saved choice on <html data-theme>, or else the system's.
 function subscribe(onChange: () => void): () => void {
   const observer = new MutationObserver(onChange);
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
-  });
-  return () => observer.disconnect();
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  const media = window.matchMedia(DARK_QUERY);
+  media.addEventListener("change", onChange);
+  return () => {
+    observer.disconnect();
+    media.removeEventListener("change", onChange);
+  };
 }
-const currentTheme = (): Theme => (document.documentElement.dataset.theme as Theme) ?? "system";
-const serverTheme = (): Theme => "system";
 
-function applyTheme(theme: Theme): void {
-  const root = document.documentElement;
-  if (theme === "system") delete root.dataset.theme;
-  else root.dataset.theme = theme;
+function themeInUse(): Theme {
+  const chosen = document.documentElement.dataset.theme;
+  if (chosen === "light" || chosen === "dark") return chosen;
+  return window.matchMedia(DARK_QUERY).matches ? "dark" : "light";
+}
+
+function chooseTheme(theme: Theme): void {
+  document.documentElement.dataset.theme = theme;
   try {
-    if (theme === "system") localStorage.removeItem(STORAGE_KEY);
-    else localStorage.setItem(STORAGE_KEY, theme);
+    localStorage.setItem(STORAGE_KEY, theme);
   } catch {
     // Storage can be blocked. The choice still applies to this page.
   }
 }
 
+/** One round button. It shows a moon in the light theme and a sun in the dark one. */
 export function ThemeToggle() {
-  const theme = useSyncExternalStore(subscribe, currentTheme, serverTheme);
+  const theme = useSyncExternalStore(subscribe, themeInUse, () => "light" as Theme);
+  const next: Theme = theme === "dark" ? "light" : "dark";
 
   return (
-    <div className="theme-toggle" role="group" aria-label="Colour theme">
-      {OPTIONS.map(({ value, label, Icon }) => (
-        <button
-          key={value}
-          type="button"
-          aria-label={label}
-          title={label}
-          aria-pressed={theme === value}
-          onClick={() => applyTheme(value)}
-        >
-          <Icon />
-        </button>
-      ))}
-    </div>
+    <button
+      type="button"
+      className="icon-btn theme-toggle"
+      aria-label={`Switch to ${next} theme`}
+      title={`Switch to ${next} theme`}
+      onClick={() => chooseTheme(next)}
+    >
+      {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+    </button>
   );
 }

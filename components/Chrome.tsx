@@ -3,7 +3,7 @@ import { caseStudies, profile, projects } from "@/lib/content";
 import { notes } from "@/lib/notes";
 import { ContactForm } from "./ContactForm";
 import { CopyButton } from "./CopyButton";
-import { ArrowUpRightIcon, DownloadIcon } from "./Icons";
+import { ArrowUpRightIcon } from "./Icons";
 import { Palette, type PaletteItem } from "./Palette";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -92,16 +92,19 @@ export function Header() {
           <Palette items={paletteItems} />
           <ThemeToggle />
           {profile.resumeUrl && (
-            <a
-              className="btn btn-solid btn-cv"
-              href={profile.resumeUrl}
-              aria-label="Download CV (PDF)"
-            >
-              <DownloadIcon />
-              <span className="cv-label">
-                <span className="long">Download </span>CV
-              </span>
-            </a>
+            <>
+              <span className="header-divider" aria-hidden="true" />
+              <a
+                className="cv-link"
+                href={profile.resumeUrl}
+                target="_blank"
+                rel="noopener"
+                aria-label="CV (opens the PDF in a new tab)"
+              >
+                CV
+                <ArrowUpRightIcon />
+              </a>
+            </>
           )}
         </div>
       </div>
