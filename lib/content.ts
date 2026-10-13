@@ -11,14 +11,22 @@ export type Profile = {
   name: string;
   /** Used where space is tight, such as the top-left corner. */
   shortName: string;
-  /** A portrait in `public/`. Leave out to show no photo. */
-  photo?: { src: string; alt: string; width: number; height: number };
+  /** Photos in `public/`: a square crop for the hero and the full picture for About. */
+  photo?: {
+    avatar: string;
+    full: { src: string; width: number; height: number };
+    alt: string;
+  };
   /** Formspree form id. The NEXT_PUBLIC_FORMSPREE_ID environment variable overrides it. */
   contactFormId?: string;
   role: string;
   /** Typed one after another under the name in the hero. */
   roles: string[];
   positioning: string;
+  /** The large hero headline. The accent word is set in italics. */
+  headline: { first: string; accent: string; rest: string };
+  /** The About section, shown next to the full photo. */
+  about: { title: { before: string; accent: string; after: string }; lead: string; body: string[] };
   location: string;
   summary: string;
   availability?: string;
@@ -56,11 +64,25 @@ export type Project = {
 export const profile: Profile = {
   name: "Mohammed Sahil Tagala",
   shortName: "Mohammed Sahil",
-  photo: { src: "/mohammed-sahil.jpg", alt: "Mohammed Sahil Tagala", width: 800, height: 1000 },
+  photo: {
+    avatar: "/mohammed-sahil-avatar.jpg",
+    full: { src: "/mohammed-sahil-full.jpg", width: 900, height: 1125 },
+    alt: "Mohammed Sahil Tagala",
+  },
   contactFormId: "xnpjgzqz",
   role: "Software engineer",
   roles: ["Software engineer", "Backend developer", "Data scientist", "ML engineer"],
   positioning: "I build backend systems, and models that explain their own alarms.",
+  headline: { first: "Reliable systems.", accent: "Explainable", rest: " models." },
+  about: {
+    title: { before: "From Bengaluru to ", accent: "Dublin", after: "." },
+    lead: "Two years shipping backend code for EV charging networks, then a year learning to make models explain themselves.",
+    body: [
+      "At Numocity I built backend services in Node.js and Python, connected our charging platform to other networks over OCPI, and automated the monitoring and alerting that kept it running.",
+      "At TU Dublin I moved to the other side of the data. My dissertation trained an LSTM autoencoder to flag abnormal charging sessions, and used SHAP so every flag says why.",
+      "I'm looking for a team where both halves count: someone who can build the service and also understand the model behind it.",
+    ],
+  },
   location: "Dublin, Ireland",
   summary:
     "I spent two years building EV charging software at Numocity in Bengaluru, then moved to Dublin for an MSc in Data Science at TU Dublin. My dissertation taught a model to flag abnormal charging sessions and show its reasons.",
@@ -268,6 +290,25 @@ export const capabilities = [
     body: "Models wrapped in Streamlit dashboards that people can use without reading code; Docker and CI/CD.",
     evidence: "Customer Churn Prediction, EEG Motor Imagery Classifier",
   },
+];
+
+/** Shown in the scrolling band on the home page. */
+export const toolbelt = [
+  "Node.js",
+  "TypeScript",
+  "Python",
+  "PostgreSQL",
+  "MongoDB",
+  "Redis",
+  "Docker",
+  "FastAPI",
+  "PyTorch",
+  "scikit-learn",
+  "XGBoost",
+  "SHAP",
+  "PySpark",
+  "Java",
+  "C++",
 ];
 
 export const featured = projects[0];

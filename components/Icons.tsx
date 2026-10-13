@@ -56,3 +56,10 @@ export const CheckIcon = (p: IconProps) => (
     <path d="m5 12 5 5 9-10" />
   </svg>
 );
+
+export const PinIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M12 21s-6-5.4-6-10a6 6 0 1 1 12 0c0 4.6-6 10-6 10Z" />
+    <circle cx="12" cy="11" r="2.2" />
+  </svg>
+);

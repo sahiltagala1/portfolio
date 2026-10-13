@@ -6,9 +6,7 @@ const NOTE = "/notes/what-a-shap-value-says/";
 
 test("home states identity, proof and a next step", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "models that explain their own alarms",
-  );
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Explainable models.");
   await expect(page.getByRole("link", { name: "See my work" })).toBeVisible();
   await expect(page.getByRole("link", { name: /Explain a flag/ })).toBeVisible();
   await expect(page.getByText("0.9268")).toBeVisible();
@@ -17,7 +15,7 @@ test("home states identity, proof and a next step", async ({ page }) => {
 
 test("navigation reaches every section and the case study", async ({ page }) => {
   await page.goto("/");
-  for (const id of ["background", "work", "playground", "notes", "contact"]) {
+  for (const id of ["about", "background", "work", "playground", "notes", "contact"]) {
     await expect(page.locator(`#${id}`)).toHaveCount(1);
   }
   await page.getByRole("link", { name: "Read the case study" }).click();
@@ -303,6 +301,7 @@ test("the CV link is in the header, opens in a new tab, and is not in the contac
 test("the portrait is shown with alt text", async ({ page }) => {
   await page.goto("/");
   const photo = page.getByRole("img", { name: "Mohammed Sahil Tagala" });
+  await photo.scrollIntoViewIfNeeded();
   await expect(photo).toBeVisible();
   expect(await photo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
 });
@@ -315,5 +314,23 @@ test("the hero types each role in turn", async ({ browser }) => {
   await expect(page.locator(".typed [aria-hidden]")).toContainText("Backend developer", {
     timeout: 8000,
   });
+  await context.close();
+});
+
+test("typing the roles never changes the height of the hero", async ({ browser }) => {
+  const context = await browser.newContext({
+    reducedMotion: "no-preference",
+    viewport: { width: 360, height: 740 },
+  });
+  const page = await context.newPage();
+  await page.goto("/");
+  const heroHeight = () =>
+    page.locator(".hero").evaluate((el) => el.getBoundingClientRect().height);
+  const heights = new Set<number>();
+  for (let i = 0; i < 12; i++) {
+    heights.add(Math.round(await heroHeight()));
+    await page.waitForTimeout(400);
+  }
+  expect(heights.size).toBe(1);
   await context.close();
 });
