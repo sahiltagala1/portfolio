@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Contact } from "@/components/Chrome";
+import { PinIcon } from "@/components/Icons";
+import { Marquee } from "@/components/Marquee";
+import { Orbit } from "@/components/Orbit";
 import { TypedRoles } from "@/components/TypedRoles";
 import { notes } from "@/lib/notes";
-import { capabilities, experience, featured, profile, projects } from "@/lib/content";
+import { capabilities, experience, featured, profile, projects, toolbelt } from "@/lib/content";
 
 const demos = [
   {
@@ -34,51 +37,105 @@ export default function Home() {
     <>
       <main id="main">
         <section className="hero" aria-labelledby="hero-title">
-          <div className={profile.photo ? "hero-grid" : undefined}>
-            <div className="hero-text">
-              <p className="hello">
-                <span className="hello-name">{profile.name}</span>
+          <Orbit />
+          <p className="kicker">
+            <span className="kicker-dot" aria-hidden="true" />
+            {profile.role} · {profile.location}
+          </p>
+          {profile.photo && (
+            <div className="intro">
+              <span className="avatar">
+                <Image src={profile.photo.avatar} alt="" width={240} height={240} priority />
+              </span>
+              <div className="intro-text">
+                <p className="intro-hello">Hi, I&apos;m {profile.shortName}.</p>
                 <TypedRoles roles={profile.roles} />
-              </p>
-              <h1 id="hero-title">{profile.positioning}</h1>
-              {profile.availability && (
-                <p className="status">
-                  <span className="status-dot" aria-hidden="true" />
-                  {profile.availability}
-                </p>
-              )}
-              <p className="lede">{profile.summary}</p>
-              <ul className="actions">
-                <li>
-                  <Link className="btn btn-solid" href="/#work">
-                    See my work
-                  </Link>
-                </li>
-                <li>
-                  <Link className="btn" href={`/work/${featured.slug}/`}>
-                    Read the dissertation case study
-                  </Link>
-                </li>
-              </ul>
+              </div>
             </div>
-            {profile.photo && (
-              <figure className="portrait">
-                <Image
-                  src={profile.photo.src}
-                  alt={profile.photo.alt}
-                  width={profile.photo.width}
-                  height={profile.photo.height}
-                  priority
-                />
-              </figure>
-            )}
-          </div>
+          )}
+          <h1 id="hero-title" className="display">
+            <span className="line">
+              <span>{profile.headline.first}</span>
+            </span>{" "}
+            <span className="line">
+              <span>
+                <em>{profile.headline.accent}</em>
+                {profile.headline.rest}
+              </span>
+            </span>
+          </h1>
+          <p className="lede hero-lede">{profile.summary}</p>
+          {profile.availability && (
+            <p className="status">
+              <span className="status-dot" aria-hidden="true" />
+              {profile.availability}
+            </p>
+          )}
+          <ul className="actions">
+            <li>
+              <Link className="btn btn-solid" href="/#work">
+                See my work
+              </Link>
+            </li>
+            <li>
+              <Link className="btn" href={`/work/${featured.slug}/`}>
+                Read the dissertation case study
+              </Link>
+            </li>
+          </ul>
         </section>
+
+        <Marquee items={toolbelt} />
+
+        {profile.photo && (
+          <section id="about" className="about" aria-labelledby="about-title">
+            <figure className="photo-card">
+              <div className="photo-frame">
+                <Image
+                  src={profile.photo.full.src}
+                  alt={profile.photo.alt}
+                  width={profile.photo.full.width}
+                  height={profile.photo.full.height}
+                  sizes="(max-width: 52rem) 90vw, 28rem"
+                />
+                <span className="photo-tag">
+                  <PinIcon />
+                  Bengaluru → Dublin
+                </span>
+              </div>
+              <figcaption>
+                <span className="photo-name">
+                  {profile.shortName}
+                  <span>.</span>
+                </span>
+                <span className="photo-meta">
+                  Software engineer
+                  <br />
+                  MSc Data Science
+                </span>
+              </figcaption>
+            </figure>
+            <div className="about-text">
+              <p className="eyebrow">About</p>
+              <h2 id="about-title" className="about-title">
+                {profile.about.title.before}
+                <em>{profile.about.title.accent}</em>
+                {profile.about.title.after}
+              </h2>
+              <p className="about-lead">{profile.about.lead}</p>
+              {profile.about.body.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section id="background" aria-labelledby="background-title">
           <div className="section-head">
             <p className="eyebrow">Experience</p>
-            <h2 id="background-title">Background</h2>
+            <h2 id="background-title">
+              Where I&apos;ve <em>been</em>
+            </h2>
             <p className="lede">
               I worked on charging infrastructure before I studied it. The dissertation came out of
               knowing what that data looks like from the inside.
@@ -104,7 +161,9 @@ export default function Home() {
         <section id="work" aria-labelledby="work-title">
           <div className="section-head">
             <p className="eyebrow">Selected work</p>
-            <h2 id="work-title">Projects</h2>
+            <h2 id="work-title">
+              Selected <em>work</em>
+            </h2>
           </div>
 
           <article className="feature">
@@ -171,7 +230,9 @@ export default function Home() {
         <section id="playground" aria-labelledby="playground-title">
           <div className="section-head">
             <p className="eyebrow">Playground</p>
-            <h2 id="playground-title">Ideas from my work, small enough to try</h2>
+            <h2 id="playground-title">
+              Ideas small enough to <em>try</em>
+            </h2>
           </div>
           <ul className="demo-cards">
             {demos.map((d) => (
@@ -192,7 +253,9 @@ export default function Home() {
         <section id="notes" aria-labelledby="notes-title">
           <div className="section-head">
             <p className="eyebrow">Writing</p>
-            <h2 id="notes-title">Notes</h2>
+            <h2 id="notes-title">
+              Things I <em>wrote</em> down
+            </h2>
           </div>
           <ul className="note-list">
             {notes.map((n) => (
@@ -209,7 +272,9 @@ export default function Home() {
         <section id="capabilities" aria-labelledby="capabilities-title">
           <div className="section-head">
             <p className="eyebrow">Skills</p>
-            <h2 id="capabilities-title">What I can do, and where I did it</h2>
+            <h2 id="capabilities-title">
+              What I can <em>do</em>, and where
+            </h2>
           </div>
           <dl className="caps">
             {capabilities.map((c) => (

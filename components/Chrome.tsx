@@ -64,6 +64,7 @@ const paletteItems: PaletteItem[] = [
 export function Header() {
   return (
     <header className="site-header">
+      <span className="scroll-progress" aria-hidden="true" />
       <div className="header-inner">
         <Link href="/" className="site-name">
           {profile.shortName}
@@ -72,7 +73,10 @@ export function Header() {
         <nav aria-label="Main">
           <ul>
             <li>
-              <Link href="/#background">Background</Link>
+              <Link href="/#about">About</Link>
+            </li>
+            <li>
+              <Link href="/#background">Experience</Link>
             </li>
             <li>
               <Link href="/#work">Work</Link>
