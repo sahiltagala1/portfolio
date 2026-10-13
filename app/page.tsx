@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Contact } from "@/components/Chrome";
 import { SessionStrip } from "@/components/SessionStrip";
@@ -13,24 +14,44 @@ export default function Home() {
     <>
       <main id="main">
         <section className="hero" aria-labelledby="hero-title">
-          <p className="eyebrow">
-            Plug in · {profile.name} · {profile.role} · {profile.location}
-          </p>
-          <h1 id="hero-title">{profile.positioning}</h1>
-          <p className="lede">{profile.summary}</p>
-          {profile.availability && <p className="lede lede-strong">{profile.availability}</p>}
-          <ul className="actions">
-            <li>
-              <Link className="btn btn-solid" href="/#flag">
-                Explain a flag
-              </Link>
-            </li>
-            <li>
-              <Link className="btn" href={`/work/${featured.slug}/`}>
-                Read the dissertation case study
-              </Link>
-            </li>
-          </ul>
+          <div className={profile.photo ? "hero-grid" : undefined}>
+            <div className="hero-text">
+              <p className="eyebrow">
+                Plug in · {profile.name} · {profile.role} · {profile.location}
+              </p>
+              <h1 id="hero-title">{profile.positioning}</h1>
+              {profile.availability && (
+                <p className="status">
+                  <span className="status-dot" aria-hidden="true" />
+                  {profile.availability}
+                </p>
+              )}
+              <p className="lede">{profile.summary}</p>
+              <ul className="actions">
+                <li>
+                  <Link className="btn btn-solid" href="/#flag">
+                    Explain a flag
+                  </Link>
+                </li>
+                <li>
+                  <Link className="btn" href={`/work/${featured.slug}/`}>
+                    Read the dissertation case study
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            {profile.photo && (
+              <figure className="portrait">
+                <Image
+                  src={profile.photo.src}
+                  alt={profile.photo.alt}
+                  width={profile.photo.width}
+                  height={profile.photo.height}
+                  priority
+                />
+              </figure>
+            )}
+          </div>
           <SessionStrip />
         </section>
 

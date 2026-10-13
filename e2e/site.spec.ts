@@ -105,6 +105,7 @@ test("metadata, sitemap and robots exist", async ({ page, request }) => {
   expect((await request.get("/robots.txt")).ok()).toBe(true);
   expect((await request.get("/og.png")).ok()).toBe(true);
   const cv = page.getByRole("link", { name: "Download CV (PDF)" });
+  await expect(cv).toBeVisible();
   expect((await request.get((await cv.getAttribute("href"))!)).ok()).toBe(true);
 });
 
@@ -138,7 +139,12 @@ test("notes list, note page and its demo link", async ({ page }) => {
 
 test("palette: opens by shortcut, filters, navigates, and returns focus on Escape", async ({
   page,
+  isMobile,
 }) => {
+  test.skip(
+    isMobile,
+    "The palette button is hidden on small screens; every destination is also a link.",
+  );
   await page.goto("/");
   const opener = page.getByRole("button", { name: /Jump to/ });
   await opener.click();
@@ -158,7 +164,11 @@ test("palette: opens by shortcut, filters, navigates, and returns focus on Escap
   await expect(page.getByRole("dialog")).toBeHidden();
 });
 
-test("palette has no accessibility violations while open", async ({ page }) => {
+test("palette has no accessibility violations while open", async ({ page, isMobile }) => {
+  test.skip(
+    isMobile,
+    "The palette button is hidden on small screens; every destination is also a link.",
+  );
   await page.goto("/");
   await page.getByRole("button", { name: /Jump to/ }).click();
   const results = await new AxeBuilder({ page })
@@ -172,6 +182,7 @@ test.describe("contact form (requests are intercepted, nothing is sent)", () => 
     await page.goto("/#contact");
     await page.getByLabel("Your name").fill("Test Person");
     await page.getByLabel("Your email").fill("test@example.com");
+    await page.getByLabel("Subject").fill("Backend role");
     await page.getByLabel("Message").fill("Hello, this is a test message.");
   }
 
@@ -222,4 +233,54 @@ test.describe("contact form (requests are intercepted, nothing is sent)", () => 
     expect(calls).toBe(0);
     await expect(page.getByText(/Message sent/)).toBeHidden();
   });
+});
+
+test("theme toggle switches theme and remembers the choice", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/");
+  const html = page.locator("html");
+  const background = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  const light = await background();
+
+  await page.getByRole("button", { name: "Dark theme" }).click();
+  await expect(html).toHaveAttribute("data-theme", "dark");
+  await expect(page.getByRole("button", { name: "Dark theme" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  expect(await background()).not.toBe(light);
+
+  await page.reload();
+  await expect(html).toHaveAttribute("data-theme", "dark");
+
+  await page.getByRole("button", { name: "Match system theme" }).click();
+  await expect(html).not.toHaveAttribute("data-theme", /.+/);
+  expect(await background()).toBe(light);
+});
+
+test("dark theme chosen by hand has no accessibility violations", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Dark theme" }).click();
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+    .analyze();
+  expect(results.violations.map((v) => `${v.id}: ${v.nodes[0]?.html}`)).toEqual([]);
+});
+
+test("copy button copies the email address", async ({ page, context, browserName }) => {
+  test.skip(browserName !== "chromium", "Clipboard permissions are a Chromium feature");
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto("/#contact");
+  await page.getByRole("button", { name: "Copy email address" }).click();
+  await expect(page.getByText("Copied")).toBeVisible();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("sahiltagala1@gmail.com");
+});
+
+test("the CV button is in the header, not the contact section", async ({ page }) => {
+  await page.goto("/");
+  await expect(
+    page.locator("header").getByRole("link", { name: "Download CV (PDF)" }),
+  ).toBeVisible();
+  await expect(page.locator("#contact").getByRole("link", { name: /CV/ })).toHaveCount(0);
 });

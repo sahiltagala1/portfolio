@@ -66,11 +66,29 @@ export function ContactForm({ formId, fallback }: { formId: string; fallback: st
   return (
     <form ref={form} className="form" action={action} method="POST" onSubmit={onSubmit}>
       <div className="field">
-        <label htmlFor="cf-name">Your name</label>
-        <input id="cf-name" name="name" type="text" autoComplete="name" required maxLength={100} />
+        <label htmlFor="cf-name">
+          Your name
+          <span className="req" aria-hidden="true">
+            *
+          </span>
+        </label>
+        <input
+          id="cf-name"
+          name="name"
+          type="text"
+          autoComplete="name"
+          required
+          maxLength={100}
+          placeholder="Full name"
+        />
       </div>
       <div className="field">
-        <label htmlFor="cf-email">Your email</label>
+        <label htmlFor="cf-email">
+          Your email
+          <span className="req" aria-hidden="true">
+            *
+          </span>
+        </label>
         <input
           id="cf-email"
           name="email"
@@ -78,17 +96,40 @@ export function ContactForm({ formId, fallback }: { formId: string; fallback: st
           autoComplete="email"
           required
           maxLength={200}
+          placeholder="name@company.com"
         />
       </div>
       <div className="field field-wide">
-        <label htmlFor="cf-message">Message</label>
+        <label htmlFor="cf-subject">
+          Subject
+          <span className="req" aria-hidden="true">
+            *
+          </span>
+        </label>
+        <input
+          id="cf-subject"
+          name="subject"
+          type="text"
+          required
+          maxLength={150}
+          placeholder="A role, a project, or a question"
+        />
+      </div>
+      <div className="field field-wide">
+        <label htmlFor="cf-message">
+          Message
+          <span className="req" aria-hidden="true">
+            *
+          </span>
+        </label>
         <textarea
           id="cf-message"
           name="message"
           required
           minLength={10}
           maxLength={3000}
-          rows={5}
+          rows={6}
+          placeholder="A few lines is plenty."
         />
       </div>
       {/* Honeypot: people never see or fill this, simple bots do. */}
@@ -97,10 +138,11 @@ export function ContactForm({ formId, fallback }: { formId: string; fallback: st
         <input id="cf-gotcha" name="_gotcha" type="text" tabIndex={-1} autoComplete="off" />
       </div>
       <div className="field-wide form-foot">
+        <p className="form-note">Sent through Formspree, straight to my inbox.</p>
         <button type="submit" className="btn btn-solid" aria-disabled={state.kind === "sending"}>
           {state.kind === "sending" ? "Sending…" : "Send message"}
         </button>
-        <p className="form-status" role="status" aria-live="polite">
+        <p className="form-status field-wide" role="status" aria-live="polite">
           {state.kind === "sent" && (
             <span className="form-ok">✓ Message sent. Your message has left this page.</span>
           )}

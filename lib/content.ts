@@ -11,6 +11,10 @@ export type Profile = {
   name: string;
   /** Used where space is tight, such as the top-left corner. */
   shortName: string;
+  /** A portrait in `public/`. Leave out to show no photo. */
+  photo?: { src: string; alt: string; width: number; height: number };
+  /** Formspree form id. The NEXT_PUBLIC_FORMSPREE_ID environment variable overrides it. */
+  contactFormId?: string;
   role: string;
   positioning: string;
   location: string;
@@ -49,13 +53,13 @@ export type Project = {
 
 export const profile: Profile = {
   name: "Mohammed Sahil Tagala",
-  shortName: "Sahil Tagala",
+  shortName: "Mohammed Sahil",
   role: "Software engineer",
   positioning: "I build backend systems, and models that explain their own alarms.",
   location: "Dublin, Ireland",
   summary:
     "I spent two years building EV charging software at Numocity in Bengaluru, then moved to Dublin for an MSc in Data Science at TU Dublin. My dissertation taught a model to flag abnormal charging sessions and show its reasons.",
-  availability: "Looking for graduate roles in software engineering and data science in Dublin.",
+  availability: "Open to software engineering and data science roles in Dublin.",
   email: "sahiltagala1@gmail.com",
   resumeUrl: "/Mohammed-Sahil-Tagala-CV.pdf",
   links: [
@@ -182,14 +186,6 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: "halal-food-scanner",
-    title: "Halal Food Scanner",
-    track: "Software engineering",
-    context: "Portfolio project",
-    summary: "A mobile app for checking whether a food product is halal.",
-    technologies: ["React Native", "FastAPI", "Supabase"],
-  },
-  {
     slug: "task-management-api",
     title: "Real-Time Task Management API",
     track: "Software engineering",
@@ -264,8 +260,8 @@ export const capabilities = [
   },
   {
     title: "Shipping something people can use",
-    body: "A mobile app with React Native, FastAPI and Supabase; models wrapped in Streamlit dashboards; Docker and CI/CD.",
-    evidence: "Halal Food Scanner, Customer Churn Prediction, EEG Motor Imagery Classifier",
+    body: "Models wrapped in Streamlit dashboards that people can use without reading code; Docker and CI/CD.",
+    evidence: "Customer Churn Prediction, EEG Motor Imagery Classifier",
   },
 ];
 

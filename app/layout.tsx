@@ -7,6 +7,7 @@ import "@fontsource/ibm-plex-mono/latin-400.css";
 import "@fontsource/ibm-plex-mono/latin-500.css";
 import "./globals.css";
 import { Header } from "@/components/Chrome";
+import { themeBootScript } from "@/components/ThemeToggle";
 import { profile } from "@/lib/content";
 import { IS_PRODUCTION_URL, SITE_URL } from "@/lib/site";
 
@@ -55,25 +56,35 @@ const person = {
   jobTitle: "Software Engineer",
   email: profile.email,
   url: SITE_URL,
-  address: { "@type": "PostalAddress", addressLocality: "Dublin", addressCountry: "IE" },
-  alumniOf: { "@type": "CollegeOrUniversity", name: "Technological University Dublin" },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Dublin",
+    addressCountry: "IE",
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Technological University Dublin",
+  },
   sameAs: profile.links.map((l) => l.href),
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IE">
+    // The boot script may set data-theme before React loads, so the attribute
+    // can differ from the server HTML on purpose.
+    <html lang="en-IE" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body>
         <a className="skip" href="#main">
           Skip to content
         </a>
         <noscript>
-          <style>{".palette-open{display:none}"}</style>
+          <style>{".palette-open,.theme-toggle{display:none}"}</style>
         </noscript>
-        <div className="wrap">
-          <Header />
-          {children}
-        </div>
+        <Header />
+        <div className="wrap">{children}</div>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }}
