@@ -54,6 +54,7 @@ export type Project = {
 export const profile: Profile = {
   name: "Mohammed Sahil Tagala",
   shortName: "Mohammed Sahil",
+  photo: { src: "/mohammed-sahil.jpg", alt: "Mohammed Sahil Tagala", width: 800, height: 1000 },
   role: "Software engineer",
   positioning: "I build backend systems, and models that explain their own alarms.",
   location: "Dublin, Ireland",

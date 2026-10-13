@@ -232,54 +232,61 @@ h3 {
   color: var(--color-text);
   background: var(--color-accent-soft);
 }
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+.icon-btn:hover {
+  background: var(--color-accent-soft);
+  border-color: var(--color-text-muted);
+}
+.icon-btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.header-divider {
+  width: 1px;
+  height: 2rem;
+  background: var(--color-border);
+  margin-inline: 0.5rem;
+}
+.cv-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  padding-inline: 0.5rem;
+  color: var(--color-text);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.cv-link svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  transition: transform 0.15s;
+}
+.cv-link:hover {
+  color: var(--color-accent);
+}
+.cv-link:hover svg {
+  transform: translate(2px, -2px);
+}
 .header-tools {
   grid-area: tools;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-.btn-cv {
-  min-height: 2.5rem;
-  padding: 0.35rem 1rem;
-  font-size: 0.9375rem;
-}
-.btn-cv svg {
-  width: 1rem;
-  height: 1rem;
-}
-
-.theme-toggle {
-  display: inline-flex;
-  padding: 3px;
-  gap: 2px;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-surface);
-}
-.theme-toggle button {
-  display: inline-grid;
-  place-items: center;
-  width: 2.125rem;
-  height: 2.125rem;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition:
-    background-color 0.15s,
-    color 0.15s;
-}
-.theme-toggle button:hover {
-  color: var(--color-text);
-}
-.theme-toggle button[aria-pressed="true"] {
-  background: var(--color-text);
-  color: var(--color-canvas);
-}
-.theme-toggle svg {
-  width: 1.0625rem;
-  height: 1.0625rem;
 }
 
 @media (max-width: 60rem) {
@@ -303,9 +310,6 @@ h3 {
 }
 @media (max-width: 40rem) {
   .header-tools .palette-open {
-    display: none;
-  }
-  .btn-cv .long {
     display: none;
   }
 }
@@ -964,16 +968,6 @@ h3 {
   }
   .header-tools {
     gap: 0.375rem;
-  }
-  .theme-toggle button {
-    width: 1.75rem;
-    height: 1.75rem;
-  }
-  .btn-cv {
-    padding-inline: 0.65rem;
-  }
-  .btn-cv .cv-label {
-    display: none;
   }
 }
 
